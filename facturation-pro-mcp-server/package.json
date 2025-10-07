@@ -1,0 +1,13 @@
+{
+  "name": "facturation-pro-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Facturation.PRO API - Manage customers, quotes, invoices, and purchases",
+  "main": "facturation-server.js",
+  "scripts": {
+    "start": "node facturation-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "axios": "^1.6.8"
+  }
+}

@@ -1,0 +1,3409 @@
+openapi: 3.0.3
+info:
+  title: Facturation.PRO API
+  version: "1.0.0"
+  description: API REST pour l'outil de facturation Facturation.PRO
+  contact:
+    email: support@facturation.pro
+  license:
+    name: Propriétaire
+
+servers:
+  - url: https://www.facturation.pro/
+
+paths:
+  # Compte
+  /account.json:
+    get:
+      summary: Informations sur le compte utilisateur
+      operationId: getAccount
+      responses:
+        '200':
+          description: Informations du compte
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  firms:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+
+  # Achats
+  /firms/{firmId}/purchases.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: with_details
+        in: query
+        schema:
+          type: integer
+          enum: [0, 1]
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: company
+        in: query
+        schema:
+          type: string
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: invoice_ref
+        in: query
+        schema:
+          type: string
+      - name: payment_ref
+        in: query
+        schema:
+          type: string
+      - name: serial_number
+        in: query
+        schema:
+          type: integer
+      - name: purchase_type
+        in: query
+        schema:
+          type: string
+          enum: [pending, draft, unpaid, paid, prepaid, excluded, forecast]
+      - name: accounting_entry
+        in: query
+        schema:
+          type: string
+      - name: period_start
+        in: query
+        schema:
+          type: string
+      - name: period_end
+        in: query
+        schema:
+          type: string
+      - name: period_type
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [paid, total, term, created, updated]
+    get:
+      summary: Liste des achats
+      operationId: listPurchases
+      responses:
+        '200':
+          description: Liste des achats
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Purchase'
+    post:
+      summary: Créer un achat
+      operationId: createPurchase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - supplier_id
+                - invoiced_on
+                - title
+                - total_with_vat
+                - vat_amount
+              properties:
+                supplier_id:
+                  type: integer
+                invoiced_on:
+                  type: string
+                  format: date
+                title:
+                  type: string
+                total_with_vat:
+                  type: number
+                vat_amount:
+                  type: number
+                notes:
+                  type: string
+                payment_mode:
+                  type: integer
+                payment_ref:
+                  type: string
+                category_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+      responses:
+        '201':
+          description: Achat créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Purchase'
+
+  /firms/{firmId}/purchases/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un achat
+      operationId: getPurchase
+      responses:
+        '200':
+          description: Détails de l'achat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Purchase'
+        '404':
+          description: Achat non trouvé
+    patch:
+      summary: Modifier un achat
+      operationId: updatePurchase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                total_with_vat:
+                  type: number
+                vat_amount:
+                  type: number
+                supplier_id:
+                  type: integer
+                invoiced_on:
+                  type: string
+                  format: date
+                notes:
+                  type: string
+                payment_mode:
+                  type: integer
+                payment_ref:
+                  type: string
+                category_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+      responses:
+        '200':
+          description: Achat modifié
+    delete:
+      summary: Supprimer un achat
+      operationId: deletePurchase
+      responses:
+        '200':
+          description: Achat supprimé
+
+  /firms/{firmId}/purchases/{id}/upload.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: filename
+        in: query
+        schema:
+          type: string
+    post:
+      summary: Ajouter une pièce jointe à un achat
+      operationId: uploadPurchaseFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                upload_file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Pièce jointe ajoutée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileAttachment'
+
+  # Catégories
+  /firms/{firmId}/categories.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: integer
+    get:
+      summary: Liste des catégories
+      operationId: listCategories
+      responses:
+        '200':
+          description: Liste des catégories
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      summary: Créer une catégorie
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - status
+              properties:
+                title:
+                  type: string
+                status:
+                  type: integer
+      responses:
+        '201':
+          description: Catégorie créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /firms/{firmId}/categories/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'une catégorie
+      operationId: getCategory
+      responses:
+        '200':
+          description: Détails de la catégorie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+    patch:
+      summary: Modifier une catégorie
+      operationId: updateCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                status:
+                  type: integer
+      responses:
+        '200':
+          description: Catégorie modifiée
+    delete:
+      summary: Supprimer une catégorie
+      operationId: deleteCategory
+      responses:
+        '200':
+          description: Catégorie supprimée
+
+  # Clients
+  /firms/{firmId}/customers.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: mode
+        in: query
+        schema:
+          type: string
+          enum: [all, company, individual, archived]
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: company
+        in: query
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      - name: category_id
+        in: query
+        schema:
+          type: integer
+      - name: with_sepa
+        in: query
+        schema:
+          type: integer
+      - name: account_code
+        in: query
+        schema:
+          type: string
+      - name: accounting_entry
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [last_invoice, last_paid, created, updated]
+    get:
+      summary: Liste des clients
+      operationId: listCustomers
+      responses:
+        '200':
+          description: Liste des clients
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Créer un client
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                individual:
+                  type: boolean
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+                phone:
+                  type: string
+                fax:
+                  type: string
+                email:
+                  type: string
+                mobile:
+                  type: string
+                website:
+                  type: string
+                notes:
+                  type: string
+                vat_number:
+                  type: string
+                siret:
+                  type: string
+                category_id:
+                  type: integer
+                account_code:
+                  type: string
+                accounting_entry:
+                  type: string
+                currency:
+                  type: string
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                reference:
+                  type: string
+                field1:
+                  type: string
+                field2:
+                  type: string
+                field3:
+                  type: string
+                field4:
+                  type: string
+                field5:
+                  type: string
+      responses:
+        '201':
+          description: Client créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+  /firms/{firmId}/customers/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: with_sepa
+        in: query
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un client
+      operationId: getCustomer
+      responses:
+        '200':
+          description: Détails du client
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    patch:
+      summary: Modifier un client
+      operationId: updateCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                individual:
+                  type: boolean
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+                phone:
+                  type: string
+                fax:
+                  type: string
+                email:
+                  type: string
+                mobile:
+                  type: string
+                website:
+                  type: string
+                notes:
+                  type: string
+                vat_number:
+                  type: string
+                siret:
+                  type: string
+                category_id:
+                  type: integer
+                account_code:
+                  type: string
+                accounting_entry:
+                  type: string
+                currency:
+                  type: string
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                reference:
+                  type: string
+                field1:
+                  type: string
+                field2:
+                  type: string
+                field3:
+                  type: string
+                field4:
+                  type: string
+                field5:
+                  type: string
+      responses:
+        '200':
+          description: Client modifié
+    delete:
+      summary: Supprimer un client
+      operationId: deleteCustomer
+      responses:
+        '200':
+          description: Client supprimé
+
+  /firms/{firmId}/customers/{id}/archive.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Archiver un client
+      operationId: archiveCustomer
+      responses:
+        '200':
+          description: Client archivé
+
+  /firms/{firmId}/customers/{id}/unarchive.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Restaurer un client
+      operationId: unarchiveCustomer
+      responses:
+        '200':
+          description: Client restauré
+
+  /firms/{firmId}/customers/{id}/upload.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: filename
+        in: query
+        schema:
+          type: string
+    post:
+      summary: Ajouter un fichier à un client
+      operationId: uploadCustomerFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                upload_file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Fichier ajouté
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/customers/{id}/quotes.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Liste des devis d'un client (raccourci)
+      operationId: listCustomerQuotes
+      responses:
+        '302':
+          description: Redirection vers la liste des devis filtrée par client
+
+  /firms/{firmId}/customers/{id}/invoices.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Liste des factures d'un client (raccourci)
+      operationId: listCustomerInvoices
+      responses:
+        '302':
+          description: Redirection vers la liste des factures filtrée par client
+
+  # Devis
+  /firms/{firmId}/quotes.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: with_details
+        in: query
+        schema:
+          type: integer
+          enum: [0, 1]
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: quote_ref
+        in: query
+        schema:
+          type: string
+      - name: full_quote_ref
+        in: query
+        schema:
+          type: string
+      - name: customer_id
+        in: query
+        schema:
+          type: integer
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: company
+        in: query
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: category_id
+        in: query
+        schema:
+          type: integer
+      - name: followup_id
+        in: query
+        schema:
+          type: integer
+      - name: accounting_entry
+        in: query
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+      - name: period_start
+        in: query
+        schema:
+          type: string
+      - name: period_end
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [customer, total, billed, created, updated]
+    get:
+      summary: Liste des devis
+      operationId: listQuotes
+      responses:
+        '200':
+          description: Liste des devis
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quote'
+    post:
+      summary: Créer un devis
+      operationId: createQuote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customer_id
+                - invoiced_on
+                - language
+                - items
+              properties:
+                customer_id:
+                  type: integer
+                currency:
+                  type: string
+                invoiced_on:
+                  type: string
+                  format: date
+                term_on:
+                  type: string
+                  format: date
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                penalty:
+                  type: number
+                title:
+                  type: string
+                rebate_percentage:
+                  type: number
+                vat_exemption:
+                  type: string
+                information:
+                  type: string
+                category_id:
+                  type: integer
+                followup_id:
+                  type: integer
+                user_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                delivery_on:
+                  type: string
+                  format: date
+                purchase_number:
+                  type: string
+                internal_note:
+                  type: string
+                activity_title:
+                  type: string
+                service_personne:
+                  type: boolean
+                tax_title:
+                  type: string
+                tax_percent:
+                  type: number
+                precompte:
+                  type: boolean
+                vat_country:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/QuoteItem'
+      responses:
+        '201':
+          description: Devis créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+
+  /firms/{firmId}/quotes/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un devis
+      operationId: getQuote
+      responses:
+        '200':
+          description: Détails du devis
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+    patch:
+      summary: Modifier un devis
+      operationId: updateQuote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                currency:
+                  type: string
+                invoiced_on:
+                  type: string
+                  format: date
+                term_on:
+                  type: string
+                  format: date
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                penalty:
+                  type: number
+                title:
+                  type: string
+                rebate_percentage:
+                  type: number
+                vat_exemption:
+                  type: string
+                information:
+                  type: string
+                category_id:
+                  type: integer
+                followup_id:
+                  type: integer
+                user_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                delivery_on:
+                  type: string
+                  format: date
+                purchase_number:
+                  type: string
+                internal_note:
+                  type: string
+                activity_title:
+                  type: string
+                service_personne:
+                  type: boolean
+                tax_title:
+                  type: string
+                tax_percent:
+                  type: number
+                precompte:
+                  type: boolean
+                vat_country:
+                  type: string
+                quote_status:
+                  type: integer
+                ignore_quote:
+                  type: boolean
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/QuoteItem'
+      responses:
+        '200':
+          description: Devis modifié
+    delete:
+      summary: Supprimer un devis
+      operationId: deleteQuote
+      responses:
+        '200':
+          description: Devis supprimé
+
+  /firms/{firmId}/quotes/{id}.pdf:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: proforma
+        in: query
+        schema:
+          type: integer
+    get:
+      summary: Télécharger un devis au format PDF
+      operationId: downloadQuote
+      responses:
+        '200':
+          description: PDF du devis
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /firms/{firmId}/quotes/{id}/invoice.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Convertir un devis en facture
+      operationId: convertQuoteToInvoice
+      responses:
+        '201':
+          description: Facture créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+
+  /firms/{firmId}/quotes/{id}/upload.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: filename
+        in: query
+        schema:
+          type: string
+      - name: visible
+        in: query
+        schema:
+          type: integer
+    post:
+      summary: Ajouter une pièce jointe à un devis
+      operationId: uploadQuoteFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                upload_file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Pièce jointe ajoutée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileAttachment'
+
+  # Factures
+  /firms/{firmId}/invoices.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: with_details
+        in: query
+        schema:
+          type: integer
+          enum: [0, 1]
+      - name: with_settlements
+        in: query
+        schema:
+          type: integer
+          enum: [0, 1]
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: invoice_ref
+        in: query
+        schema:
+          type: string
+      - name: full_invoice_ref
+        in: query
+        schema:
+          type: string
+      - name: payment_ref
+        in: query
+        schema:
+          type: string
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: customer_id
+        in: query
+        schema:
+          type: integer
+      - name: company
+        in: query
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        schema:
+          type: string
+      - name: bill_type
+        in: query
+        schema:
+          type: string
+          enum: [paid, unpaid, term, invoice, external, refund, down_payment, draft, notes, nova]
+      - name: category_id
+        in: query
+        schema:
+          type: integer
+      - name: followup_id
+        in: query
+        schema:
+          type: integer
+      - name: accounting_entry
+        in: query
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        schema:
+          type: integer
+      - name: period_start
+        in: query
+        schema:
+          type: string
+      - name: period_end
+        in: query
+        schema:
+          type: string
+      - name: period_type
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [customer, paid, total, billed, term, created, updated]
+    get:
+      summary: Liste des factures
+      operationId: listInvoices
+      responses:
+        '200':
+          description: Liste des factures
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+    post:
+      summary: Créer une facture
+      operationId: createInvoice
+      parameters:
+        - name: type_doc
+          in: query
+          schema:
+            type: string
+        - name: external
+          in: query
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customer_id
+                - invoiced_on
+                - language
+                - items
+              properties:
+                customer_id:
+                  type: integer
+                currency:
+                  type: string
+                invoiced_on:
+                  type: string
+                  format: date
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                penalty:
+                  type: number
+                title:
+                  type: string
+                rebate_percentage:
+                  type: number
+                vat_exemption:
+                  type: string
+                information:
+                  type: string
+                category_id:
+                  type: integer
+                followup_id:
+                  type: integer
+                user_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                delivery_on:
+                  type: string
+                  format: date
+                purchase_number:
+                  type: string
+                internal_note:
+                  type: string
+                activity_title:
+                  type: string
+                service_personne:
+                  type: boolean
+                tax_title:
+                  type: string
+                tax_percent:
+                  type: number
+                precompte:
+                  type: boolean
+                vat_country:
+                  type: string
+                external_ref:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/InvoiceItem'
+      responses:
+        '201':
+          description: Facture créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+
+  /firms/{firmId}/invoices/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: type_doc
+        in: query
+        schema:
+          type: string
+        description: final ou draft
+    get:
+      summary: Détails d'une facture
+      operationId: getInvoice
+      responses:
+        '200':
+          description: Détails de la facture
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+    patch:
+      summary: Modifier une facture
+      operationId: updateInvoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                currency:
+                  type: string
+                invoiced_on:
+                  type: string
+                  format: date
+                language:
+                  type: string
+                pay_before:
+                  type: string
+                penalty:
+                  type: number
+                title:
+                  type: string
+                rebate_percentage:
+                  type: number
+                vat_exemption:
+                  type: string
+                information:
+                  type: string
+                category_id:
+                  type: integer
+                followup_id:
+                  type: integer
+                user_id:
+                  type: integer
+                accounting_entry:
+                  type: string
+                delivery_on:
+                  type: string
+                  format: date
+                purchase_number:
+                  type: string
+                internal_note:
+                  type: string
+                activity_title:
+                  type: string
+                service_personne:
+                  type: boolean
+                tax_title:
+                  type: string
+                tax_percent:
+                  type: number
+                precompte:
+                  type: boolean
+                vat_country:
+                  type: string
+                payment_mode:
+                  type: integer
+                paid_on:
+                  type: string
+                  format: date
+                payment_ref:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/InvoiceItem'
+      responses:
+        '200':
+          description: Facture modifiée
+    delete:
+      summary: Supprimer une facture
+      operationId: deleteInvoice
+      responses:
+        '200':
+          description: Facture supprimée
+
+  /firms/{firmId}/invoices/{id}.pdf:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: original
+        in: query
+        schema:
+          type: integer
+    get:
+      summary: Télécharger une facture au format PDF
+      operationId: downloadInvoice
+      responses:
+        '200':
+          description: PDF de la facture
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+  /firms/{firmId}/invoices/{id}/refund.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+    post:
+      summary: Avoir sur une facture
+      operationId: refundInvoice
+      responses:
+        '200':
+          description: Avoir créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+
+  /firms/{firmId}/invoices/{id}/upload.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: filename
+        in: query
+        schema:
+          type: string
+      - name: visible
+        in: query
+        schema:
+          type: integer
+    post:
+      summary: Ajouter une pièce jointe à une facture
+      operationId: uploadInvoiceFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                upload_file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Pièce jointe ajoutée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/invoices/{id}/settlements.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Liste des règlements d'une facture
+      operationId: listInvoiceSettlements
+      responses:
+        '200':
+          description: Liste des règlements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Settlement'
+    post:
+      summary: Créer un règlement
+      operationId: createSettlement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - total
+                - payment_mode
+                - paid_on
+              properties:
+                total:
+                  type: number
+                payment_mode:
+                  type: integer
+                paid_on:
+                  type: string
+                  format: date
+                payment_ref:
+                  type: string
+      responses:
+        '201':
+          description: Règlement créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settlement'
+
+  /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: settlementId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un règlement
+      operationId: getSettlement
+      responses:
+        '200':
+          description: Détails du règlement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settlement'
+    delete:
+      summary: Supprimer un règlement
+      operationId: deleteSettlement
+      responses:
+        '200':
+          description: Règlement supprimé
+
+  # Fournisseurs
+  /firms/{firmId}/suppliers.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: company
+        in: query
+        schema:
+          type: string
+      - name: category_id
+        in: query
+        schema:
+          type: integer
+      - name: with_sepa
+        in: query
+        schema:
+          type: integer
+      - name: country
+        in: query
+        schema:
+          type: string
+      - name: account_code
+        in: query
+        schema:
+          type: string
+      - name: accounting_entry
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [created, updated]
+    get:
+      summary: Liste des fournisseurs
+      operationId: listSuppliers
+      responses:
+        '200':
+          description: Liste des fournisseurs
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Supplier'
+    post:
+      summary: Créer un fournisseur
+      operationId: createSupplier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - company_name
+              properties:
+                company_name:
+                  type: string
+                civility:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+                phone:
+                  type: string
+                fax:
+                  type: string
+                email:
+                  type: string
+                mobile:
+                  type: string
+                website:
+                  type: string
+                notes:
+                  type: string
+                vat_number:
+                  type: string
+                siret:
+                  type: string
+                category_id:
+                  type: integer
+                account_code:
+                  type: string
+                accounting_entry:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                reverse_charge:
+                  type: boolean
+      responses:
+        '201':
+          description: Fournisseur créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+
+  /firms/{firmId}/suppliers/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un fournisseur
+      operationId: getSupplier
+      responses:
+        '200':
+          description: Détails du fournisseur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+    patch:
+      summary: Modifier un fournisseur
+      operationId: updateSupplier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: string
+                civility:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+                phone:
+                  type: string
+                fax:
+                  type: string
+                email:
+                  type: string
+                mobile:
+                  type: string
+                website:
+                  type: string
+                notes:
+                  type: string
+                vat_number:
+                  type: string
+                siret:
+                  type: string
+                category_id:
+                  type: integer
+                account_code:
+                  type: string
+                accounting_entry:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+                reverse_charge:
+                  type: boolean
+      responses:
+        '200':
+          description: Fournisseur modifié
+    delete:
+      summary: Supprimer un fournisseur
+      operationId: deleteSupplier
+      responses:
+        '200':
+          description: Fournisseur supprimé
+
+  # Produits
+  /firms/{firmId}/products.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: ref
+        in: query
+        schema:
+          type: string
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: api_id
+        in: query
+        schema:
+          type: integer
+      - name: api_custom
+        in: query
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [ref, created, updated]
+    get:
+      summary: Liste des produits
+      operationId: listProducts
+      responses:
+        '200':
+          description: Liste des produits
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Créer un produit
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ref
+                - title
+                - unit_price
+                - vat
+              properties:
+                ref:
+                  type: string
+                title:
+                  type: string
+                unit_price:
+                  type: number
+                vat:
+                  type: number
+                measure:
+                  type: string
+                sap_nature:
+                  type: integer
+                nature:
+                  type: integer
+                category_id:
+                  type: integer
+                notes:
+                  type: string
+                field1:
+                  type: string
+                field2:
+                  type: string
+                field3:
+                  type: string
+                field4:
+                  type: string
+                field5:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+      responses:
+        '201':
+          description: Produit créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /firms/{firmId}/products/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un produit
+      operationId: getProduct
+      responses:
+        '200':
+          description: Détails du produit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    patch:
+      summary: Modifier un produit
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ref:
+                  type: string
+                title:
+                  type: string
+                unit_price:
+                  type: number
+                vat:
+                  type: number
+                measure:
+                  type: string
+                sap_nature:
+                  type: integer
+                nature:
+                  type: integer
+                category_id:
+                  type: integer
+                notes:
+                  type: string
+                field1:
+                  type: string
+                field2:
+                  type: string
+                field3:
+                  type: string
+                field4:
+                  type: string
+                field5:
+                  type: string
+                api_id:
+                  type: integer
+                api_custom:
+                  type: string
+      responses:
+        '200':
+          description: Produit modifié
+    delete:
+      summary: Supprimer un produit
+      operationId: deleteProduct
+      responses:
+        '200':
+          description: Produit supprimé
+
+  # Suivis commerciaux
+  /firms/{firmId}/followups.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: title
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: integer
+    get:
+      summary: Liste des suivis commerciaux
+      operationId: listFollowups
+      responses:
+        '200':
+          description: Liste des suivis commerciaux
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Followup'
+    post:
+      summary: Créer un suivi commercial
+      operationId: createFollowup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - status
+              properties:
+                title:
+                  type: string
+                status:
+                  type: integer
+      responses:
+        '201':
+          description: Suivi commercial créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Followup'
+
+  /firms/{firmId}/followups/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Détails d'un suivi commercial
+      operationId: getFollowup
+      responses:
+        '200':
+          description: Détails du suivi commercial
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Followup'
+    patch:
+      summary: Modifier un suivi commercial
+      operationId: updateFollowup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                status:
+                  type: integer
+      responses:
+        '200':
+          description: Suivi commercial modifié
+    delete:
+      summary: Supprimer un suivi commercial
+      operationId: deleteFollowup
+      responses:
+        '200':
+          description: Suivi commercial supprimé
+
+  # Fichiers
+  /firms/{firmId}/assets/quotes.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: quote_id
+        in: query
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [title, size, updated, created]
+    get:
+      summary: Liste des pièces jointes aux devis
+      operationId: listQuoteFiles
+      responses:
+        '200':
+          description: Liste des pièces jointes
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/assets/invoices.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: invoice_id
+        in: query
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [title, size, updated, created]
+    get:
+      summary: Liste des pièces jointes aux factures
+      operationId: listInvoiceFiles
+      responses:
+        '200':
+          description: Liste des pièces jointes
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/assets/customers.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: customer_id
+        in: query
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [title, size, updated, created]
+    get:
+      summary: Liste des fichiers clients
+      operationId: listCustomerFiles
+      responses:
+        '200':
+          description: Liste des pièces jointes
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/assets/purchases.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: purchase_id
+        in: query
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [title, size, updated, created]
+    get:
+      summary: Liste des pièces jointes aux achats
+      operationId: listPurchaseFiles
+      responses:
+        '200':
+          description: Liste des pièces jointes
+          headers:
+            X-Pagination:
+              description: Informations de pagination
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileAttachment'
+
+  /firms/{firmId}/assets/{id}.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    delete:
+      summary: Supprimer un fichier
+      operationId: deleteFile
+      responses:
+        '200':
+          description: Fichier supprimé
+
+  # Emails
+  /firms/{firmId}/emails.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: bill_id
+        in: query
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Envoyer un devis ou une facture par courriel
+      operationId: sendEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                cc:
+                  type: string
+                bcc:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '201':
+          description: Email envoyé
+
+  # Commandes d'abonnement
+  /firms/{firmId}/orders.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Liste des commandes d'abonnement
+      operationId: listOrders
+      responses:
+        '200':
+          description: Liste des commandes d'abonnement
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    amount:
+                      type: number
+                    payment_date:
+                      type: string
+                      format: date
+                    invoice_url:
+                      type: string
+                    refunded:
+                      type: boolean
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        firms:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+
+    Purchase:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        supplier_id:
+          type: integer
+          description: Fournisseur
+        supplier_identity:
+          type: string
+          description: Nom du fournisseur
+        title:
+          type: string
+          description: Nature/Libellé
+        ref:
+          type: string
+          description: Réf. facture
+        total_with_vat:
+          type: number
+          description: Montant TTC
+        vat_amount:
+          type: number
+          description: Montant TVA
+        total:
+          type: number
+          description: Montant HT
+        currency:
+          type: string
+          description: Devise
+        invoiced_on:
+          type: string
+          format: date
+          description: Date de facture
+        term_on:
+          type: string
+          format: date
+          description: Date d'échéance
+        paid_on:
+          type: string
+          format: date
+          description: Réglé le
+        payment_mode:
+          type: integer
+          description: Mode de règlement
+        payment_ref:
+          type: string
+          description: Référence du paiement
+        paid_in_main_currency:
+          type: number
+          description: Equivalent en euros
+        estimated_total_in_main_currency:
+          type: number
+          description: Total TTC estimé en euro
+        draft:
+          type: boolean
+          description: Brouillon
+        reverse_charge:
+          type: boolean
+          description: Auto-liquidation
+        prepaid:
+          type: boolean
+          description: Pré-paiement
+        notes:
+          type: string
+          description: Notes / Remarques
+        skip_export:
+          type: boolean
+          description: Exclure de l'export comptable
+        serial_number:
+          type: integer
+          description: Numéro de pièce
+        category_id:
+          type: integer
+          description: Catégorie
+        accounting_entry:
+          type: string
+          description: Compte d'imputation
+        accounting_asset:
+          type: boolean
+          description: Immobilisation
+        asset_end_on:
+          type: string
+          format: date
+          description: Date de sortie de l'immo.
+        asset_end_reason:
+          type: string
+          description: Motif de sortie de l'immobilisation
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+        files:
+          type: array
+          description: Liste des justificatifs
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        title:
+          type: string
+          description: Libellé
+        status:
+          type: integer
+          description: Affectation
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        company_name:
+          type: string
+          description: Société
+        civility:
+          type: string
+          description: Civilité
+        first_name:
+          type: string
+          description: Prénom
+        last_name:
+          type: string
+          description: Nom
+        short_name:
+          type: string
+          description: Nom mnémotechnique
+        street:
+          type: string
+          description: Adresse de facturation
+        city:
+          type: string
+          description: Ville
+        zip_code:
+          type: string
+          description: Code postal
+        country:
+          type: string
+          description: Pays (Code ISO à 2 lettres du pays, en majuscules)
+        phone:
+          type: string
+          description: Téléphone
+        fax:
+          type: string
+          description: Fax
+        email:
+          type: string
+          description: Email
+        mobile:
+          type: string
+          description: Mobile
+        website:
+          type: string
+          description: Site web
+        notes:
+          type: string
+          description: Notes internes
+        vat_number:
+          type: string
+          description: N° TVA
+        siret:
+          type: string
+          description: Siret
+        category_id:
+          type: integer
+          description: Catégorie
+        account_code:
+          type: string
+          description: Compte client
+        accounting_entry:
+          type: string
+          description: Compte d'imputation
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        sepa_iban:
+          type: string
+          description: IBAN
+        sepa_bic:
+          type: string
+          description: BIC
+        sepa_rum:
+          type: string
+          description: RUM
+        sepa_signature_on:
+          type: string
+          format: date
+          description: Date de signature du mandat SEPA
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+        individual:
+          type: boolean
+          description: Particulier
+        reference:
+          type: string
+          description: Référence client
+        penalty:
+          type: number
+          description: Pénalités de retard
+        discount:
+          type: number
+          description: Taux d'escompte
+        pay_before:
+          type: string
+          description: Délai de paiement
+        validity:
+          type: integer
+          description: Durée de validité d'un devis
+        last_invoiced_on:
+          type: string
+          format: date
+          description: Dernière facture le
+        last_paid_on:
+          type: string
+          format: date
+          description: Dernier règlement le
+        currency:
+          type: string
+          description: Devise
+        language:
+          type: string
+          description: Langue des PDF
+        default_vat:
+          type: number
+          description: Taux de TVA
+        vat_country:
+          type: string
+          description: Code pays des taux TVA à appliquer
+        vat_exemption:
+          type: string
+          description: Motif d'exonération de TVA
+        invoice_email:
+          type: string
+          description: Email facturation
+        field1:
+          type: string
+          description: Champ libre 1
+        field2:
+          type: string
+          description: Champ libre 2
+        field3:
+          type: string
+          description: Champ libre 3
+        field4:
+          type: string
+          description: Champ libre 4
+        field5:
+          type: string
+          description: Champ libre 5
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+
+    Quote:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        customer_id:
+          type: integer
+          description: Client
+        customer_identity:
+          type: string
+          description: Nom de la société ou du client
+        title:
+          type: string
+          description: Objet
+        language:
+          type: string
+          description: Langue du PDF
+        category_id:
+          type: integer
+          description: Catégorie
+        followup_id:
+          type: integer
+          description: Suivi commercial
+        invoiced_on:
+          type: string
+          format: date
+          description: Date du devis
+        term_on:
+          type: string
+          format: date
+          description: Valide jusqu'au
+        draft:
+          type: boolean
+          description: Brouillon
+        total:
+          type: number
+          description: Montant total HT
+        total_with_vat:
+          type: number
+          description: Montant total TTC
+        currency:
+          type: string
+          description: Devise
+        rebate_percentage:
+          type: number
+          description: Réduction globale
+        exchange_rate:
+          type: number
+          description: Taux de change
+        estimated_rate:
+          type: number
+          description: Taux de change estimé?
+        vat_exemption:
+          type: string
+          description: Motif d'exonération de TVA
+        vat_country:
+          type: string
+          description: Code pays des taux TVA à appliquer
+        tax_title:
+          type: string
+          description: Intitulé de la taxe additionnelle sur le total HT
+        tax_percent:
+          type: number
+          description: Pourcentage de la taxe additionnelle sur le total HT
+        penalty:
+          type: number
+          description: Pénalités de retard
+        pay_before:
+          type: string
+          description: Délai de paiement
+        discount:
+          type: number
+          description: Taux d'escompte
+        precompte:
+          type: boolean
+          description: Précompte des cotisations
+        activity_title:
+          type: string
+          description: Nature de l'activité
+        service_personne:
+          type: boolean
+          description: Service à la personne
+        accounting_entry:
+          type: string
+          description: Compte d'imputation
+        information:
+          type: string
+          description: Informations complémentaires
+        internal_note:
+          type: string
+          description: Note interne
+        purchase_number:
+          type: string
+          description: Bon de commande
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        user_id:
+          type: integer
+          description: Géré par
+        public_download_url:
+          type: string
+          description: Url de téléchargement publique
+        items:
+          type: array
+          description: Lignes de facturation
+        files:
+          type: array
+          description: Fichiers joints
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+        quote_status:
+          type: integer
+          description: Statut du devis
+        quote_ref:
+          type: integer
+          description: Devis n°
+        ignore_quote:
+          type: boolean
+          description: Ne pas faire de suivi de facturation
+        fully_invoiced:
+          type: boolean
+          description: Devis soldé?
+        amount_invoiced:
+          type: number
+          description: Montant déjà facturé
+        invoice_ids:
+          type: array
+          items:
+            type: integer
+          description: Tableau des IDs des factures associées à ce devis
+        delivery_on:
+          type: string
+          format: date
+          description: Livré/Réalisé le
+        estimated_total_in_main_currency:
+          type: number
+          description: Total TTC estimé en euro
+        fully_paid:
+          type: boolean
+          description: Devis entièrement payé
+        remaining_balance:
+          type: number
+          description: Solde restant dû
+
+    QuoteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        quantity:
+          type: number
+          description: Quantité
+        measure:
+          type: string
+          description: Unité de mesure
+        title:
+          type: string
+          description: Libellé
+        unit_price:
+          type: number
+          description: Prix unitaire HT
+        vat:
+          type: number
+          description: Taux de TVA
+        product_id:
+          type: integer
+          description: Identifiant du produit
+        position:
+          type: integer
+          description: Ligne n°
+        total:
+          type: number
+          description: Total HT
+        optional:
+          type: boolean
+          description: En option
+        style:
+          type: string
+          description: Style de formattage
+        nature:
+          type: integer
+          description: Type
+        sap_nature:
+          type: integer
+          description: Code activité
+
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        customer_id:
+          type: integer
+          description: Client
+        customer_identity:
+          type: string
+          description: Nom de la société ou du client
+        title:
+          type: string
+          description: Objet
+        language:
+          type: string
+          description: Langue du PDF
+        category_id:
+          type: integer
+          description: Catégorie
+        followup_id:
+          type: integer
+          description: Suivi commercial
+        invoiced_on:
+          type: string
+          format: date
+          description: Date facture
+        term_on:
+          type: string
+          format: date
+          description: Date d'échéance
+        draft:
+          type: boolean
+          description: Brouillon
+        total:
+          type: number
+          description: Montant total HT
+        total_with_vat:
+          type: number
+          description: Montant total TTC
+        currency:
+          type: string
+          description: Devise
+        rebate_percentage:
+          type: number
+          description: Réduction globale
+        exchange_rate:
+          type: number
+          description: Taux de change
+        estimated_rate:
+          type: number
+          description: Taux de change estimé?
+        vat_exemption:
+          type: string
+          description: Motif d'exonération de TVA
+        vat_country:
+          type: string
+          description: Code pays des taux TVA à appliquer
+        tax_title:
+          type: string
+          description: Intitulé de la taxe additionnelle sur le total HT
+        tax_percent:
+          type: number
+          description: Pourcentage de la taxe additionnelle sur le total HT
+        penalty:
+          type: number
+          description: Pénalités de retard
+        pay_before:
+          type: string
+          description: Délai de paiement
+        discount:
+          type: number
+          description: Taux d'escompte
+        precompte:
+          type: boolean
+          description: Précompte des cotisations
+        activity_title:
+          type: string
+          description: Nature de l'activité
+        service_personne:
+          type: boolean
+          description: Service à la personne
+        accounting_entry:
+          type: string
+          description: Compte d'imputation
+        information:
+          type: string
+          description: Informations complémentaires
+        internal_note:
+          type: string
+          description: Note interne
+        purchase_number:
+          type: string
+          description: Bon de commande
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        user_id:
+          type: integer
+          description: Géré par
+        public_download_url:
+          type: string
+          description: Url de téléchargement publique
+        items:
+          type: array
+          description: Lignes de facturation
+        files:
+          type: array
+          description: Fichiers joints
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+        delivery_on:
+          type: string
+          format: date
+          description: Livré/Réalisé le
+        quote_id:
+          type: integer
+          description: ID Devis associé
+        invoice_ref:
+          type: string
+          description: N° de facture
+        external_ref:
+          type: string
+          description: N° de facture externe
+        full_invoice_ref:
+          type: string
+          description: N° de facture intégral (incluant le prefixe)
+        payment_mode:
+          type: integer
+          description: Mode de règlement
+        paid_on:
+          type: string
+          format: date
+          description: Payé le
+        payment_ref:
+          type: string
+          description: Référence du paiement
+        paid_in_main_currency:
+          type: number
+          description: Equivalent du total TTC en euros
+        estimated_total_in_main_currency:
+          type: number
+          description: Total TTC estimé en euro
+        refund_id:
+          type: integer
+          description: Avoir sur la facture n°ID
+        pay_url:
+          type: string
+          description: Url de paiement en ligne (option GOLD requise)
+        balance:
+          type: number
+          description: Montant restant dû
+        external:
+          type: boolean
+          description: Facture externe
+        overdue_at:
+          type: string
+          format: date-time
+          description: Dernière relance
+        settlements:
+          type: array
+          description: Liste des règlements
+        recurring_invoice_id:
+          type: integer
+          description: ID de la facture récurrente associée
+
+    InvoiceItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        quantity:
+          type: number
+          description: Quantité
+        measure:
+          type: string
+          description: Unité de mesure
+        title:
+          type: string
+          description: Libellé
+        unit_price:
+          type: number
+          description: Prix unitaire HT
+        vat:
+          type: number
+          description: Taux de TVA
+        product_id:
+          type: integer
+          description: Identifiant du produit
+        position:
+          type: integer
+          description: Ligne n°
+        total:
+          type: number
+          description: Total HT
+        optional:
+          type: boolean
+          description: En option
+        style:
+          type: string
+          description: Style de formattage
+        nature:
+          type: integer
+          description: Type
+        sap_nature:
+          type: integer
+          description: Code activité
+
+    Settlement:
+      type: object
+      properties:
+        id:
+          type: integer
+        invoice_id:
+          type: integer
+        total:
+          type: number
+        payment_mode:
+          type: integer
+        paid_on:
+          type: string
+          format: date
+        payment_ref:
+          type: string
+
+    Supplier:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        company_name:
+          type: string
+          description: Société
+        civility:
+          type: string
+          description: Civilité
+        first_name:
+          type: string
+          description: Prénom
+        last_name:
+          type: string
+          description: Nom
+        short_name:
+          type: string
+          description: Nom mnémotechnique
+        street:
+          type: string
+          description: Adresse de facturation
+        city:
+          type: string
+          description: Ville
+        zip_code:
+          type: string
+          description: Code postal
+        country:
+          type: string
+          description: Pays (Code ISO à 2 lettres du pays, en majuscules)
+        phone:
+          type: string
+          description: Téléphone
+        fax:
+          type: string
+          description: Fax
+        email:
+          type: string
+          description: Email
+        mobile:
+          type: string
+          description: Mobile
+        website:
+          type: string
+          description: Site web
+        notes:
+          type: string
+          description: Notes internes
+        vat_number:
+          type: string
+          description: N° TVA
+        siret:
+          type: string
+          description: Siret
+        category_id:
+          type: integer
+          description: Catégorie
+        account_code:
+          type: string
+          description: Compte fournisseur
+        accounting_entry:
+          type: string
+          description: Compte d'imputation
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        sepa_iban:
+          type: string
+          description: IBAN
+        sepa_bic:
+          type: string
+          description: BIC
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+        reverse_charge:
+          type: boolean
+          description: Auto-liquidation
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        ref:
+          type: string
+          description: Référence interne
+        title:
+          type: string
+          description: Libellé
+        unit_price:
+          type: number
+          description: Prix unitaire HT
+        vat:
+          type: number
+          description: Taux de TVA
+        measure:
+          type: string
+          description: Unité de mesure
+        sap_nature:
+          type: integer
+          description: Code activité NOVA
+        nature:
+          type: integer
+          description: Type de facturation
+        category_id:
+          type: integer
+          description: Catégorie
+        notes:
+          type: string
+          description: Notes internes
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+        field1:
+          type: string
+          description: Champ libre 1
+        field2:
+          type: string
+          description: Champ libre 2
+        field3:
+          type: string
+          description: Champ libre 3
+        field4:
+          type: string
+          description: Champ libre 4
+        field5:
+          type: string
+          description: Champ libre 5
+        soft_deleted:
+          type: boolean
+          description: Enregistrement marqué comme à supprimer
+        hard_delete_on:
+          type: string
+          format: date
+          description: Date définitive de la suppression
+        api_id:
+          type: integer
+          description: API - Référence numérique libre
+        api_custom:
+          type: string
+          description: API - Texte libre
+
+    Followup:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifiant
+        title:
+          type: string
+          description: Libellé
+        status:
+          type: integer
+          description: Affectation
+        created_at:
+          type: string
+          format: date-time
+          description: Créé le
+        updated_at:
+          type: string
+          format: date-time
+          description: Modifié le
+
+    FileAttachment:
+      type: object
+      properties:
+        id:
+          type: integer
+        purchase_id:
+          type: integer
+        quote_id:
+          type: integer
+        invoice_id:
+          type: integer
+        customer_id:
+          type: integer
+        document_name:
+          type: string
+        document_size:
+          type: integer
+        download_url:
+          type: string
+        title:
+          type: string
+        visible:
+          type: boolean

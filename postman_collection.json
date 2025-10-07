@@ -1,0 +1,1447 @@
+{
+  "info": {
+    "name": "Facturation.PRO API - Collection Complète",
+    "description": "Collection exhaustive couvrant TOUTES les routes de l'API Facturation.PRO - Authentification Basic Auth (IdentifiantApi:CleApi)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://www.facturation.pro",
+      "type": "string",
+      "description": "URL de base de l'API Facturation.PRO"
+    },
+    {
+      "key": "firmId",
+      "value": "",
+      "type": "string",
+      "description": "ID de l'entreprise"
+    },
+    {
+      "key": "IDENTIFIANT_API",
+      "value": "",
+      "type": "string",
+      "description": "Identifiant API fourni par Facturation.PRO"
+    },
+    {
+      "key": "CLE_API",
+      "value": "",
+      "type": "string",
+      "description": "Clé API (mot de passe) fournie par Facturation.PRO"
+    },
+    {
+      "key": "userAgent",
+      "value": "MonApp-API-full (contact@votreapp.com)",
+      "type": "string",
+      "description": "User-Agent requis par l'API"
+    },
+    {
+      "key": "customerId",
+      "value": "",
+      "type": "string",
+      "description": "ID du client"
+    },
+    {
+      "key": "supplierId",
+      "value": "",
+      "type": "string",
+      "description": "ID du fournisseur"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string",
+      "description": "ID de la catégorie"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string",
+      "description": "ID du produit"
+    },
+    {
+      "key": "quoteId",
+      "value": "",
+      "type": "string",
+      "description": "ID du devis"
+    },
+    {
+      "key": "invoiceId",
+      "value": "",
+      "type": "string",
+      "description": "ID de la facture"
+    },
+    {
+      "key": "purchaseId",
+      "value": "",
+      "type": "string",
+      "description": "ID de l'achat"
+    },
+    {
+      "key": "followupId",
+      "value": "",
+      "type": "string",
+      "description": "ID du suivi commercial"
+    },
+    {
+      "key": "settlementId",
+      "value": "",
+      "type": "string",
+      "description": "ID du règlement"
+    }
+  ],
+  "item": [
+    {
+      "name": "🗝️ Connexion & Compte",
+      "item": [
+        {
+          "name": "Test authentification API",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/account.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["account.json"]
+            },
+            "description": "Test d'authentification et récupération des informations compte + auto-configuration firmId",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        if (jsonData.firms && jsonData.firms.length > 0) {",
+                    "            pm.collectionVariables.set(\"firmId\", jsonData.firms[0].id.toString());",
+                    "            console.log(\"✅ firmId configuré : \" + jsonData.firms[0].id);",
+                    "        }",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing JSON\"); }",
+                    "} else {",
+                    "    console.log(\"❌ Échec authentification - Vérifiez vos credentials API\");",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Commandes d'abonnement",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/orders.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "orders.json"]
+            },
+            "description": "Liste des factures d'abonnements payées"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Catégories",
+      "item": [
+        {
+          "name": "Liste catégories",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/categories.json?page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "categories.json"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Numéro de page"
+                }
+              ]
+            },
+            "description": "Liste des catégories par groupe de 50"
+          }
+        },
+        {
+          "name": "Créer catégorie",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Services informatiques\",\n  \"status\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/categories.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "categories.json"]
+            },
+            "description": "Créer une nouvelle catégorie (1=Ventes uniquement, 2=Achats uniquement, 0=Achats/Ventes)"
+          }
+        },
+        {
+          "name": "Détails catégorie",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/categories/{{categoryId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "categories", "{{categoryId}}.json"]
+            },
+            "description": "Détails d'une catégorie spécifique"
+          }
+        },
+        {
+          "name": "Modifier catégorie",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Services IT\",\n  \"status\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/categories/{{categoryId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "categories", "{{categoryId}}.json"]
+            },
+            "description": "Modifier une catégorie existante"
+          }
+        },
+        {
+          "name": "Supprimer catégorie",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/categories/{{categoryId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "categories", "{{categoryId}}.json"]
+            },
+            "description": "Supprimer une catégorie (ne supprime pas les documents associés)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Clients",
+      "item": [
+        {
+          "name": "Liste clients",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers.json?page=1&mode=company",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers.json"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Numéro de page"
+                },
+                {
+                  "key": "mode",
+                  "value": "company",
+                  "description": "all, company, individual, archived"
+                }
+              ]
+            },
+            "description": "Liste paginée des clients professionnels"
+          }
+        },
+        {
+          "name": "Créer client entreprise",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Tech Solutions SARL\",\n  \"individual\": false,\n  \"email\": \"contact@techsolutions.fr\",\n  \"phone\": \"01 23 45 67 89\",\n  \"street\": \"123 Rue de la Tech\",\n  \"city\": \"Paris\",\n  \"zip_code\": \"75001\",\n  \"country\": \"FR\",\n  \"vat_number\": \"\",\n  \"siret\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers.json"]
+            },
+            "description": "Création d'un nouveau client professionnel",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        pm.collectionVariables.set(\"customerId\", jsonData.id.toString());",
+                    "        console.log(\"✅ Client créé - ID: \" + jsonData.id);",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing\"); }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Créer client particulier",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Jean\",\n  \"last_name\": \"Dupont\",\n  \"individual\": true,\n  \"email\": \"jean.dupont@email.com\",\n  \"phone\": \"06 12 34 56 78\",\n  \"street\": \"456 Avenue de la Paix\",\n  \"city\": \"Lyon\",\n  \"zip_code\": \"69000\",\n  \"country\": \"FR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers.json"]
+            },
+            "description": "Création d'un nouveau client particulier"
+          }
+        },
+        {
+          "name": "Détails client",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}.json?with_sepa=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}.json"],
+              "query": [
+                {
+                  "key": "with_sepa",
+                  "value": "1",
+                  "description": "1 pour inclure données SEPA (clé admin requise)"
+                }
+              ]
+            },
+            "description": "Détails complets d'un client spécifique"
+          }
+        },
+        {
+          "name": "Modifier client",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"01 98 76 54 32\",\n  \"website\": \"https://www.techsolutions.fr\",\n  \"pay_before\": \"45\",\n  \"discount\": 5.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}.json"]
+            },
+            "description": "Modification d'un client existant"
+          }
+        },
+        {
+          "name": "Archiver client",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}/archive.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}", "archive.json"]
+            },
+            "description": "Archiver un client (le masque de la liste active)"
+          }
+        },
+        {
+          "name": "Restaurer client archivé",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}/unarchive.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}", "unarchive.json"]
+            },
+            "description": "Restaurer un client archivé"
+          }
+        },
+        {
+          "name": "Supprimer client",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}.json"]
+            },
+            "description": "Supprimer un client (uniquement s'il n'a jamais été facturé)"
+          }
+        },
+        {
+          "name": "Upload fichier client",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "upload_file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "filename",
+                  "value": "contrat-client.pdf",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/customers/{{customerId}}/upload.json?filename=contrat-client.pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "customers", "{{customerId}}", "upload.json"],
+              "query": [
+                {
+                  "key": "filename",
+                  "value": "contrat-client.pdf"
+                }
+              ]
+            },
+            "description": "Upload d'un fichier attaché à la fiche client"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Catalogue Produits",
+      "item": [
+        {
+          "name": "Liste produits",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/products.json?page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "products.json"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Numéro de page"
+                }
+              ]
+            },
+            "description": "Liste paginée des produits du catalogue"
+          }
+        },
+        {
+          "name": "Créer produit",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ref\": \"TELVU100\",\n  \"title\": \"Télécommande hexagonale VU100\",\n  \"unit_price\": 10.0,\n  \"vat\": 0.2,\n  \"notes\": \"Télécommande pour système de contrôle VU100\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/products.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "products.json"]
+            },
+            "description": "Création d'un nouveau produit dans le catalogue",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        pm.collectionVariables.set(\"productId\", jsonData.id.toString());",
+                    "        console.log(\"✅ Produit créé - ID: \" + jsonData.id + \" - Réf: \" + jsonData.ref);",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing\"); }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Détails produit",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/products/{{productId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "products", "{{productId}}.json"]
+            },
+            "description": "Récupère les détails d'un produit"
+          }
+        },
+        {
+          "name": "Modifier produit",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unit_price\": 12.0,\n  \"notes\": \"Prix mis à jour - Télécommande VU100 premium\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/products/{{productId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "products", "{{productId}}.json"]
+            },
+            "description": "Modification d'un produit existant"
+          }
+        },
+        {
+          "name": "Supprimer produit",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/products/{{productId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "products", "{{productId}}.json"]
+            },
+            "description": "Suppression d'un produit (attention: ne supprime pas des factures)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📄 Devis",
+      "item": [
+        {
+          "name": "Liste devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes.json?page=1&with_details=0&status=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes.json"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "with_details",
+                  "value": "0",
+                  "description": "1 pour inclure items et fichiers"
+                },
+                {
+                  "key": "status",
+                  "value": "0",
+                  "description": "0=En attente, 1=Accepté, 9=Refusé"
+                }
+              ]
+            },
+            "description": "Liste paginée des devis avec filtres"
+          }
+        },
+        {
+          "name": "Créer devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": {{customerId}},\n  \"title\": \"Développement site web\",\n  \"invoiced_on\": \"2025-12-01\",\n  \"term_on\": \"2025-12-31\",\n  \"language\": \"fr\",\n  \"pay_before\": \"30\",\n  \"penalty\": 1.50,\n  \"information\": \"Devis pour développement site web complet\",\n  \"items\": [\n    {\n      \"position\": 1,\n      \"title\": \"Frontend React\",\n      \"quantity\": 1,\n      \"unit_price\": 5000.0,\n      \"vat\": 0.2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes.json"]
+            },
+            "description": "Création d'un nouveau devis",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        pm.collectionVariables.set(\"quoteId\", jsonData.id.toString());",
+                    "        console.log(\"✅ Devis créé - ID: \" + jsonData.id + \" - Réf: \" + jsonData.quote_ref);",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing\"); }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Détails devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}.json"]
+            },
+            "description": "Détails complets d'un devis"
+          }
+        },
+        {
+          "name": "Modifier devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Développement site web complet\",\n  \"penalty\": 2.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}.json"]
+            },
+            "description": "Modification d'un devis existant"
+          }
+        },
+        {
+          "name": "Supprimer devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}.json"]
+            },
+            "description": "Supprimer un devis"
+          }
+        },
+        {
+          "name": "Télécharger devis PDF",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}.pdf?proforma=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}.pdf"],
+              "query": [
+                {
+                  "key": "proforma",
+                  "value": "0",
+                  "description": "1 pour facture proforma"
+                }
+              ]
+            },
+            "description": "Télécharger le PDF du devis"
+          }
+        },
+        {
+          "name": "Convertir devis en facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}/invoice.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}", "invoice.json"]
+            },
+            "description": "Convertir un devis en facture",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        pm.collectionVariables.set(\"invoiceId\", jsonData.id.toString());",
+                    "        console.log(\"✅ Facture créée - ID: \" + jsonData.id + \" - Réf: \" + jsonData.invoice_ref);",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing\"); }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Upload fichier devis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "upload_file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "filename",
+                  "value": "cahier-des-charges.pdf",
+                  "type": "text"
+                },
+                {
+                  "key": "visible",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}/upload.json?filename=cahier-des-charges.pdf&visible=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}", "upload.json"],
+              "query": [
+                {
+                  "key": "filename",
+                  "value": "cahier-des-charges.pdf"
+                },
+                {
+                  "key": "visible",
+                  "value": "1",
+                  "description": "1 pour rendre visible par le client"
+                }
+              ]
+            },
+            "description": "Upload d'un fichier joint au devis"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test(\"Status code is 2xx\", function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+          "});",
+          "pm.test(\"Response time is less than 5000ms\", function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "console.log(\"Code: \" + pm.response.code + \" - Time: \" + pm.response.responseTime + \"ms\");"
+        ]
+      }
+    }
+  ]
+}
