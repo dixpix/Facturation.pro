@@ -12,14 +12,14 @@ const {
 const axios = require('axios');
 
 // Configuration depuis les variables d'environnement
-const API_USERNAME = process.env.FACTURATION_API_USERNAME;
-const API_PASSWORD = process.env.FACTURATION_API_PASSWORD;
+const API_USERNAME = process.env.FACTURATION_API_ID;
+const API_PASSWORD = process.env.FACTURATION_API_KEY;
 const FIRM_ID = process.env.FACTURATION_FIRM_ID;
 const BASE_URL = process.env.FACTURATION_BASE_URL || 'https://www.facturation.pro';
 const USER_AGENT = process.env.USER_AGENT || 'Facturation-PRO-MCP-Server (contact@example.com)';
 
 if (!API_USERNAME || !API_PASSWORD || !FIRM_ID) {
-  console.error('FACTURATION_API_USERNAME, FACTURATION_API_PASSWORD and FACTURATION_FIRM_ID environment variables are required');
+  console.error('FACTURATION_API_ID, FACTURATION_API_KEY and FACTURATION_FIRM_ID environment variables are required');
   process.exit(1);
 }
 

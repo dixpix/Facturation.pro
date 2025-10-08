@@ -1,8 +1,8 @@
 # 🚀 WORKFLOWS COUVERTS PAR MCP FACTURATION.PRO
 
 ## 📊 **STATUT ACTUEL** *(Mis à jour: 07/10/2025)*
-**Couverture globale** : **79%** (56/70 outils essentiels)
-**Phase en cours** : Phase 2 (Modules Business) - Achats 100% Complété 🎯
+**Couverture globale** : **71%** (50/70 outils essentiels)
+**Phase en cours** : Phase 1 Bis - Modules Devis/Factures finalisés ✅
 
 ---
 
@@ -34,7 +34,7 @@
 | `convert_quote_to_invoice` | Devis → Facture | ✅ Opérationnel |
 | `list_quotes` | Liste devis avec filtres | ✅ Opérationnel |
 
-### **3. 📄 GESTION DES DEVIS - AVANCÉ** ⭐ *NOUVEAU PH1*
+### **3. 📄 GESTION DES DEVIS - COMPLET** ⭐ *FINALISÉ PH1*
 | Outil | Description | Statut |
 |-------|-------------|--------|
 | `get_quote` | Détails complets devis | ✅ Opérationnel |
@@ -42,10 +42,14 @@
 | `delete_quote` | Supprimer devis | ✅ Opérationnel |
 | `download_quote_pdf` | PDF devis officiel | ✅ Opérationnel |
 | `download_quote_proforma` | PDF proforma | ✅ Opérationnel |
+| `update_quote_status` | Changer statut (0/1/9) | ✅ **NOUVEAU** |
+| `upload_quote_file` | Ajouter pièces jointes | ✅ **NOUVEAU** |
+| `send_quote_email` | Envoi par courriel | ✅ **NOUVEAU** |
 
-**Workflow complet** : Du devis à la facturation avec génération PDF
+**Statut** : 🏆 **100% COUVERT** (13/13 outils) **FINALISÉ**
+**Workflow complet** : Gestion 360° devis (création → modification → pièces jointes → email → statut)
 
-### **4. 🧾 GESTION DES FACTURES** ⭐ *100% COUVERT PH1*
+### **4. 🧾 GESTION DES FACTURES** ⭐ *FINALISÉ PH1*
 | Outil | Description | Statut | Niveau |
 |-------|-------------|--------|--------|
 | **Création & Conversion** | | | |
@@ -99,6 +103,14 @@
 **Statut** : 🏆 **100% COUVERT** (6/6 outils)
 **Workflow complet** : Gestion complète des charges fournisseurs
 
+### **3. 📊 BUSINESS INTELLIGENCE - TABLEAUX DE BORD** ⭐ *NOUVEAU*
+| Outil | Description | Statut |
+|-------|-------------|--------|
+| `get_dashboard` | KPIs entreprise (CA, devis, factures) + vues temporelles | ✅ Opérationnel |
+
+**Statut** : 🏆 **100% COUVERT** (1/1 outils)
+**Workflow complet** : Vision stratégique avec métriques financières clés
+
 ---
 
 ## 🔶 **WORKFLOWS PARTIELLEMENT COUVERTS**
@@ -109,33 +121,51 @@
 - ❌ Gestion pièces jointes achat (Phase 2)
 
 ### **7. ⚙️ PARAMÉTRAGE ENTREPRISE**
-- ❌ Gestion fournisseurs *(Phase 2)*
+- ✅ Gestion fournisseurs *(AJOUTÉ)*
 - ❌ Gestion achats *(Phase 2)*
 - ❌ Suivis commerciaux *(Phase 2)*
 
+### **5. 🚛 GESTION DES FOURNISSEURS** ⭐ *NOUVEAU*
+| Outil | Description | Statut |
+|-------|-------------|--------|
+| `list_suppliers` | Liste fournisseurs avec filtres | ✅ Opérationnel |
+| `create_supplier` | Créer nouveau fournisseur | ✅ Opérationnel |
+| `get_supplier` | Détails fournisseur | ✅ Opérationnel |
+| `update_supplier` | Modifier fournisseur | ✅ Opérationnel |
+| `delete_supplier` | Supprimer fournisseur | ✅ Opérationnel |
+
+**Statut** : 🏆 **100% COUVERT** (5/5 outils)
+**Workflow complet** : Gestion complète des partenaires fournisseurs
+
 ---
 
-## ❌ **WORKFLOWS NON COUVERTS** *(Phases 2-3)*
+## ❌ **WORKFLOWS NON COUVERTS** *(Phases 2)*
 
-### **ACHATS & FOURNISSEURS**
-- ❌ Gestion fournisseurs (CRUD)
-- ❌ Gestion achats (achats fournisseurs)
-- ❌ Pièces jointes achats
+### **COMPLÉTION MODULES EXISTANTS**
+- ❌ Finaliser Devis (5 outils manquants : statuts, fichiers, emails)
+- ❌ Finaliser Factures (7 outils manquants : modifications, règlements, avoirs)
 
-### **FACTURES RESTANT À COUVRIR** *(Irish Phase 2)*
+### **NOUVEAUX MODULES BUSINESS**
+- ❌ Module Suivis Commerciaux (5 outils)
+- ❌ Module Gestion Fichiers Avancée (4 outils)
+- ❌ Module Recherches Avancées (8 outils)
+- ❌ Module Email Automation (2 outils)
+
+---
+
+## 📝 **WORKFLOWS OPTIONNELS** *(Fonctionnalités Secondaires - Non Prioritaires)*
+
+### **COMPTABILITÉ AVANCÉE** *(Optionnel - Risque légal élevé)*
 - ❌ Exports comptables factures (Phase 2)
 - ❌ Modification factures définitives (Phase 3 - risque légal)
 - ❌ Gestion comptable avancée (Phase 3)
-
-### **COMPTABILITÉ**
 - ❌ Gestion SEPA clients
 - ❌ Exports comptables
 - ❌ Écritures comptables
 
-### **BUSINESS INTELLIGENCE**
+### **BUSINESS INTELLIGENCE AVANCÉE** *(Optionnel - Complexité élevée)*
 - ❌ Recherches multi-critères avancées
 - ❌ Exports CSV (clients/factures/devis)
-- ❌ Tableaux de bord
 
 ---
 
@@ -183,7 +213,7 @@ Paramétrage Catégories → Classification opérations → Suivi par catégorie
 | **Factures** | 18 | 25 | 72% | 🏆 Complet |
 | **Catégories** | 4 | 4 | 100% | 🏆 Complet |
 | **Achats** | 6 | 6 | 100% | 🏆 Complet |
-| **Fournisseurs** | 0 | 3 | 0% | ❌ Non couvert |
+| **Fournisseurs** | 5 | 5 | 100% | 🏆 Complet |
 | **Fichiers** | 2 | 10 | 20% | 🔶 Partiel |
 | **Email** | 1 | 2 | 50% | 🔶 Partiel |
 | **Exports** | 0 | 3 | 0% | ❌ Non couvert |

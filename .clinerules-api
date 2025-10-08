@@ -1,0 +1,109 @@
+### RÈGLES POUR LES FICHIERS openapi.yaml ET postman_collection.json
+
+#### OBLIGATIONS IMPÉRATIVES
+
+**INTERDICTION ABSOLUE** de modifier `facturation_pro_api.md`, c'est la documentation originelle. 
+
+**Les fichiers `openapi.yaml` et `postman_collection.json` DOIVENT obligatoirement gérer TOUTES les routes de l'API Facturation.PRO** listées dans la documentation originale `facuration_pro_api.md`.
+
+**INTERDICTION ABSOLUE** de retirer des routes existantes ou de simplifier la couverture de l'API.
+
+#### PROCÉDURE AVANT MODIFICATION
+
+**AVANT TOUTE MODIFICATION** des fichiers `openapi.yaml` ou `postman_collection.json` :
+
+1. **Demander explicitement l'autorisation à l'utilisateur**
+2. **Justifier pourquoi la modification est nécessaire**
+3. **Obtenir la confirmation de l'utilisateur**
+4. **Documenter les raisons dans le message-commit**
+
+#### COUVERTURE OBLIGATOIRE
+
+Le fichier doit couvrir **100%** des routes suivantes :
+
+**COMPTE**
+- GET /account.json
+
+**ACHATS**
+- GET /firms/{firmId}/purchases.json
+- POST /firms/{firmId}/purchases.json
+- GET /firms/{firmId}/purchases/{id}.json
+- PATCH /firms/{firmId}/purchases/{id}.json
+- DELETE /firms/{firmId}/purchases/{id}.json
+- POST /firms/{firmId}/purchases/{id}/upload.json
+
+**CATÉGORIES**
+- GET /firms/{firmId}/categories.json
+- POST /firms/{firmId}/categories.json
+- GET /firms/{firmId}/categories/{id}.json
+- PATCH /firms/{firmId}/categories/{id}.json
+- DELETE /firms/{firmId}/categories/{id}.json
+
+**CLIENTS**
+- GET /firms/{firmId}/customers.json
+- POST /firms/{firmId}/customers.json
+- GET /firms/{firmId}/customers/{id}.json
+- PATCH /firms/{firmId}/customers/{id}.json
+- DELETE /firms/{firmId}/customers/{id}.json
+- POST /firms/{firmId}/customers/{id}/archive.json
+- POST /firms/{firmId}/customers/{id}/unarchive.json
+- POST /firms/{firmId}/customers/{id}/upload.json
+- GET /firms/{firmId}/customers/{id}/quotes.json
+- GET /firms/{firmId}/customers/{id}/invoices.json
+
+**DEVIS**
+- GET /firms/{firmId}/quotes.json
+- POST /firms/{firmId}/quotes.json
+- GET /firms/{firmId}/quotes/{id}.json
+- PATCH /firms/{firmId}/quotes/{id}.json
+- DELETE /firms/{firmId}/quotes/{id}.json
+- GET /firms/{firmId}/quotes/{id}.pdf
+- POST /firms/{firmId}/quotes/{id}/invoice.json
+- POST /firms/{firmId}/quotes/{id}/upload.json
+- POST /firms/{firmId}/emails.json (pour devis)
+
+**FACTURES**
+- GET /firms/{firmId}/invoices.json
+- POST /firms/{firmId}/invoices.json
+- GET /firms/{firmId}/invoices/{id}.json
+- PATCH /firms/{firmId}/invoices/{id}.json
+- DELETE /firms/{firmId}/invoices/{id}.json
+- GET /firms/{firmId}/invoices/{id}.pdf
+- POST /firms/{firmId}/invoices/{id}/refund.json
+- POST /firms/{firmId}/invoices/{id}/upload.json
+- POST /firms/{firmId}/emails.json (pour factures)
+- GET /firms/{firmId}/invoices/{id}/settlements.json
+- POST /firms/{firmId}/invoices/{id}/settlements.json
+- GET /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json
+- DELETE /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json
+
+**FOURNISSEURS**
+- GET /firms/{firmId}/suppliers.json
+- POST /firms/{firmId}/suppliers.json
+- GET /firms/{firmId}/suppliers/{id}.json
+- PATCH /firms/{firmId}/suppliers/{id}.json
+- DELETE /firms/{firmId}/suppliers/{id}.json
+
+**CATALOGUE PRODUITS**
+- GET /firms/{firmId}/products.json
+- POST /firms/{firmId}/products.json
+- GET /firms/{firmId}/products/{id}.json
+- PATCH /firms/{firmId}/products/{id}.json
+- DELETE /firms/{firmId}/products/{id}.json
+
+**SUIVIS COMMERCIAUX**
+- GET /firms/{firmId}/followups.json
+- POST /firms/{firmId}/followups.json
+- GET /firms/{firmId}/followups/{id}.json
+- PATCH /firms/{firmId}/followups/{id}.json
+- DELETE /firms/{firmId}/followups/{id}.json
+
+**FICHIERS**
+- GET /firms/{firmId}/assets/quotes.json
+- GET /firms/{firmId}/assets/invoices.json
+- GET /firms/{firmId}/assets/customers.json
+- GET /firms/{firmId}/assets/purchases.json
+- DELETE /firms/{firmId}/assets/{id}.json
+
+**COMMANDES D'ABONNEMENT**
+- GET /firms/{firmId}/orders.json
