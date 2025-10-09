@@ -1423,6 +1423,790 @@
             },
             "description": "Upload d'un fichier joint au devis"
           }
+        },
+        {
+          "name": "Envoyer devis par email",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{IDENTIFIANT_API}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{CLE_API}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "User-Agent",
+                "value": "{{userAgent}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"client@example.com\",\n  \"cc\": \"\",\n  \"bcc\": \"\",\n  \"subject\": \"Votre devis\",\n  \"message\": \"Veuillez trouver ci-joint votre devis.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}/email.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "quotes", "{{quoteId}}", "email.json"]
+            },
+            "description": "Envoyer le devis par email au client"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏭 Fournisseurs",
+      "item": [
+        {
+          "name": "Liste fournisseurs",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/suppliers.json?page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "suppliers.json"],
+              "query": [{"key": "page", "value": "1"}]
+            },
+            "description": "Liste paginée des fournisseurs"
+          }
+        },
+        {
+          "name": "Créer fournisseur",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Fournisseur Test\",\n  \"email\": \"contact@fournisseur.com\",\n  \"phone\": \"0123456789\",\n  \"street\": \"1 rue du Commerce\",\n  \"city\": \"Paris\",\n  \"zip_code\": \"75001\",\n  \"country\": \"FR\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/suppliers.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "suppliers.json"]
+            },
+            "description": "Création d'un nouveau fournisseur"
+          }
+        },
+        {
+          "name": "Obtenir fournisseur",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/suppliers/{{supplierId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "suppliers", "{{supplierId}}.json"]
+            },
+            "description": "Détails d'un fournisseur"
+          }
+        },
+        {
+          "name": "Modifier fournisseur",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Nouveau nom\",\n  \"email\": \"nouveau@fournisseur.com\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/suppliers/{{supplierId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "suppliers", "{{supplierId}}.json"]
+            },
+            "description": "Modification d'un fournisseur"
+          }
+        },
+        {
+          "name": "Supprimer fournisseur",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "DELETE",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/suppliers/{{supplierId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "suppliers", "{{supplierId}}.json"]
+            },
+            "description": "Suppression d'un fournisseur"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Factures",
+      "item": [
+        {
+          "name": "Liste factures",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices.json?page=1&with_details=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices.json"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "with_details", "value": "1", "description": "1 pour inclure les lignes"}
+              ]
+            },
+            "description": "Liste paginée des factures"
+          }
+        },
+        {
+          "name": "Obtenir facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}.json"]
+            },
+            "description": "Détails d'une facture"
+          }
+        },
+        {
+          "name": "Créer facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": {{customerId}},\n  \"title\": \"Prestation de service\",\n  \"invoiced_on\": \"2025-10-07\",\n  \"pay_before\": \"30\",\n  \"items\": [\n    {\n      \"position\": 1,\n      \"title\": \"Développement\",\n      \"quantity\": 10,\n      \"unit_price\": 500.0,\n      \"vat\": 0.2\n    }\n  ]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices.json"]
+            },
+            "description": "Création d'une facture"
+          }
+        },
+        {
+          "name": "Modifier facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Nouveau titre\",\n  \"pay_before\": \"45\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}.json"]
+            },
+            "description": "Modification d'une facture"
+          }
+        },
+        {
+          "name": "Supprimer facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "DELETE",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}.json"]
+            },
+            "description": "Suppression d'une facture brouillon"
+          }
+        },
+        {
+          "name": "Télécharger PDF facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}.pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}.pdf"]
+            },
+            "description": "Télécharger le PDF d'une facture"
+          }
+        },
+        {
+          "name": "Créer avoir (remboursement)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Avoir suite erreur\",\n  \"refund_amount\": 500.0,\n  \"refund_date\": \"2025-10-07\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/refund.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "refund.json"]
+            },
+            "description": "Créer un avoir de remboursement"
+          }
+        },
+        {
+          "name": "Upload fichier facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/chemin/vers/justificatif.pdf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/upload.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "upload.json"]
+            },
+            "description": "Joindre un fichier à une facture (justificatif, bon de commande)"
+          }
+        },
+        {
+          "name": "Envoyer facture par email",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"client@example.com\",\n  \"subject\": \"Votre facture\",\n  \"message\": \"Veuillez trouver ci-joint votre facture.\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/email.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "email.json"]
+            },
+            "description": "Envoyer la facture par email au client"
+          }
+        },
+        {
+          "name": "Liste règlements facture",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/settlements.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "settlements.json"]
+            },
+            "description": "Liste des règlements partiels d'une facture"
+          }
+        },
+        {
+          "name": "Créer règlement",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"total\": 1500.0,\n  \"payment_mode\": 1,\n  \"paid_on\": \"2025-10-07\",\n  \"payment_ref\": \"VIR20251007\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/settlements.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "settlements.json"]
+            },
+            "description": "Enregistrer un règlement partiel"
+          }
+        },
+        {
+          "name": "Obtenir règlement",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/settlements/{{settlementId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "settlements", "{{settlementId}}.json"]
+            },
+            "description": "Détails d'un règlement"
+          }
+        },
+        {
+          "name": "Supprimer règlement",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "DELETE",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/invoices/{{invoiceId}}/settlements/{{settlementId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "invoices", "{{invoiceId}}", "settlements", "{{settlementId}}.json"]
+            },
+            "description": "Supprimer un règlement"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Suivis Commerciaux",
+      "item": [
+        {
+          "name": "Liste suivis",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/followups.json?page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "followups.json"],
+              "query": [{"key": "page", "value": "1"}]
+            },
+            "description": "Liste paginée des suivis commerciaux"
+          }
+        },
+        {
+          "name": "Créer suivi",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": {{customerId}},\n  \"title\": \"Appel de suivi\",\n  \"description\": \"Discussion sur les besoins du client\",\n  \"date\": \"2025-10-10\",\n  \"status\": \"planned\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/followups.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "followups.json"]
+            },
+            "description": "Créer un nouveau suivi commercial",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    try {",
+                    "        var jsonData = pm.response.json();",
+                    "        pm.collectionVariables.set(\"followupId\", jsonData.id.toString());",
+                    "        console.log(\"✅ Suivi créé - ID: \" + jsonData.id);",
+                    "    } catch (e) { console.log(\"❌ Erreur parsing\"); }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Obtenir suivi",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/followups/{{followupId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "followups", "{{followupId}}.json"]
+            },
+            "description": "Détails d'un suivi commercial"
+          }
+        },
+        {
+          "name": "Modifier suivi",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\",\n  \"description\": \"Appel effectué - client intéressé\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/followups/{{followupId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "followups", "{{followupId}}.json"]
+            },
+            "description": "Modifier un suivi commercial"
+          }
+        },
+        {
+          "name": "Supprimer suivi",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "DELETE",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/followups/{{followupId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "followups", "{{followupId}}.json"]
+            },
+            "description": "Supprimer un suivi commercial"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Achats",
+      "item": [
+        {
+          "name": "Liste achats",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases.json?page=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases.json"],
+              "query": [{"key": "page", "value": "1"}]
+            },
+            "description": "Liste paginée des achats"
+          }
+        },
+        {
+          "name": "Obtenir achat",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "GET",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases/{{purchaseId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases", "{{purchaseId}}.json"]
+            },
+            "description": "Détails d'un achat"
+          }
+        },
+        {
+          "name": "Créer achat",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplier_id\": {{supplierId}},\n  \"title\": \"Achat matériel\",\n  \"invoiced_on\": \"2025-10-07\",\n  \"total\": 500.0,\n  \"vat_amount\": 100.0,\n  \"items\": [\n    {\n      \"position\": 1,\n      \"title\": \"Ordinateur\",\n      \"quantity\": 1,\n      \"unit_price\": 500.0,\n      \"vat\": 0.2\n    }\n  ]\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases.json"]
+            },
+            "description": "Création d'un achat"
+          }
+        },
+        {
+          "name": "Modifier achat",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"},
+              {"key": "Content-Type", "value": "application/json", "type": "text"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Nouveau titre\",\n  \"total\": 600.0\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases/{{purchaseId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases", "{{purchaseId}}.json"]
+            },
+            "description": "Modification d'un achat"
+          }
+        },
+        {
+          "name": "Supprimer achat",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "DELETE",
+            "header": [{"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}],
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases/{{purchaseId}}.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases", "{{purchaseId}}.json"]
+            },
+            "description": "Suppression d'un achat"
+          }
+        },
+        {
+          "name": "Upload fichier achat",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {"key": "username", "value": "{{IDENTIFIANT_API}}", "type": "string"},
+                {"key": "password", "value": "{{CLE_API}}", "type": "string"}
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {"key": "User-Agent", "value": "{{userAgent}}", "type": "text"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/chemin/vers/facture_fournisseur.pdf"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/firms/{{firmId}}/purchases/{{purchaseId}}/upload.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["firms", "{{firmId}}", "purchases", "{{purchaseId}}", "upload.json"]
+            },
+            "description": "Joindre une facture fournisseur à un achat"
+          }
         }
       ]
     }

@@ -1147,6 +1147,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileAttachment'
 
+  /firms/{firmId}/quotes/{id}/email.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Envoyer un devis par courriel
+      operationId: emailQuote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                cc:
+                  type: string
+                bcc:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '201':
+          description: Email envoyé
+
   # Factures
   /firms/{firmId}/invoices.json:
     parameters:
@@ -1653,6 +1689,42 @@ paths:
       responses:
         '200':
           description: Règlement supprimé
+
+  /firms/{firmId}/invoices/{id}/email.json:
+    parameters:
+      - name: firmId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Envoyer une facture par courriel
+      operationId: emailInvoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                to:
+                  type: string
+                cc:
+                  type: string
+                bcc:
+                  type: string
+                subject:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '201':
+          description: Email envoyé
 
   # Fournisseurs
   /firms/{firmId}/suppliers.json:

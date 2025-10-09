@@ -63,14 +63,29 @@
 
 ---
 
-## PHASE 2: MISE À JOUR POSTMAN COLLECTION
+## PHASE 2: MISE À JOUR POSTMAN COLLECTION ✅ TERMINÉ
 
-### Étape 2.1: Analyse des routes manquantes dans Postman
+**Résumé des ajouts**:
+- ✅ Module Fournisseurs: 5 routes (liste, créer, obtenir, modifier, supprimer)
+- ✅ Module Factures: 14 routes (CRUD + PDF + avoir + upload + email + règlements)
+- ✅ Module Achats: 6 routes (liste, créer, obtenir, modifier, supprimer, upload)
+- ✅ Module Suivis Commerciaux: 5 routes CRUD complètes
+- ✅ **Total: 30 nouvelles routes ajoutées**
+- ✅ **Collection Postman finale: 58 routes réparties en 9 modules**
+- ✅ **Couverture API: 100% des routes prioritaires (P0+P1)**
 
-**Modules incomplets dans Postman** (comparé à la documentation):
+### Étape 2.1: Analyse et ajout des routes manquantes dans Postman ✅ FAIT
 
-#### Module Factures ❌ ENTIÈREMENT ABSENT
-**Routes à ajouter** (12 routes):
+**Modules ajoutés à Postman**:
+
+#### Module Fournisseurs ✅ AJOUTÉ (5 routes)
+1. `GET /firms/{firmId}/suppliers.json` - Liste des fournisseurs
+2. `POST /firms/{firmId}/suppliers.json` - Créer un fournisseur
+3. `GET /firms/{firmId}/suppliers/{id}.json` - Détails d'un fournisseur
+4. `PATCH /firms/{firmId}/suppliers/{id}.json` - Modifier un fournisseur
+5. `DELETE /firms/{firmId}/suppliers/{id}.json` - Supprimer un fournisseur
+
+#### Module Factures ✅ AJOUTÉ (14 routes)
 1. `GET /firms/{firmId}/invoices.json` - Liste des factures
 2. `POST /firms/{firmId}/invoices.json` - Créer une facture
 3. `GET /firms/{firmId}/invoices/{id}.json` - Détails d'une facture
@@ -78,31 +93,22 @@
 5. `DELETE /firms/{firmId}/invoices/{id}.json` - Supprimer une facture
 6. `GET /firms/{firmId}/invoices/{id}.pdf` - Télécharger facture PDF
 7. `POST /firms/{firmId}/invoices/{id}/refund.json` - Créer avoir
-8. `POST /firms/{firmId}/invoices/{id}/upload.json` - Upload fichier
-9. `GET /firms/{firmId}/invoices/{id}/settlements.json` - Liste règlements
-10. `POST /firms/{firmId}/invoices/{id}/settlements.json` - Créer règlement
-11. `GET /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json` - Détails règlement
-12. `DELETE /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json` - Supprimer règlement
+8. `POST /firms/{firmId}/invoices/{id}/upload.json` - Upload fichier ✅ NOUVEAU
+9. `POST /firms/{firmId}/invoices/{id}/email.json` - Envoyer email ✅ NOUVEAU
+10. `GET /firms/{firmId}/invoices/{id}/settlements.json` - Liste règlements
+11. `POST /firms/{firmId}/invoices/{id}/settlements.json` - Créer règlement
+12. `GET /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json` - Détails règlement
+13. `DELETE /firms/{firmId}/invoices/{id}/settlements/{settlementId}.json` - Supprimer règlement
 
-#### Module Achats ❌ ENTIÈREMENT ABSENT
-**Routes à ajouter** (6 routes):
+#### Module Achats ✅ AJOUTÉ (6 routes)
 1. `GET /firms/{firmId}/purchases.json` - Liste des achats
 2. `POST /firms/{firmId}/purchases.json` - Créer un achat
 3. `GET /firms/{firmId}/purchases/{id}.json` - Détails d'un achat
 4. `PATCH /firms/{firmId}/purchases/{id}.json` - Modifier un achat
 5. `DELETE /firms/{firmId}/purchases/{id}.json` - Supprimer un achat
-6. `POST /firms/{firmId}/purchases/{id}/upload.json` - Upload fichier
+6. `POST /firms/{firmId}/purchases/{id}/upload.json` - Upload fichier achat
 
-#### Module Fournisseurs ❌ ENTIÈREMENT ABSENT
-**Routes à ajouter** (5 routes):
-1. `GET /firms/{firmId}/suppliers.json` - Liste des fournisseurs
-2. `POST /firms/{firmId}/suppliers.json` - Créer un fournisseur
-3. `GET /firms/{firmId}/suppliers/{id}.json` - Détails d'un fournisseur
-4. `PATCH /firms/{firmId}/suppliers/{id}.json` - Modifier un fournisseur
-5. `DELETE /firms/{firmId}/suppliers/{id}.json` - Supprimer un fournisseur
-
-#### Module Suivis Commerciaux ❌ ENTIÈREMENT ABSENT
-**Routes à ajouter** (5 routes):
+#### Module Suivis Commerciaux ✅ AJOUTÉ (5 routes)
 1. `GET /firms/{firmId}/followups.json` - Liste des suivis
 2. `POST /firms/{firmId}/followups.json` - Créer un suivi
 3. `GET /firms/{firmId}/followups/{id}.json` - Détails d'un suivi
@@ -640,7 +646,7 @@ case "get_dashboard":
 
 ---
 
-### Étape 3.9: Ajouter Ressources MCP enrichies
+### Étape 3.9: Ajouter Ressources MCP enrichies ✅ FAIT
 
 **Ressources à ajouter**:
 ```typescript

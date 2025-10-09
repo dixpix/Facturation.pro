@@ -1438,6 +1438,132 @@ class FacturationProServer {
           }
         },
 
+        // === MODULE SUIVIS COMMERCIAUX ===
+        {
+          name: 'list_followups',
+          description: 'Liste des suivis commerciaux avec filtres',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              page: {
+                type: 'number',
+                description: 'Numéro de page (par défaut: 1)'
+              },
+              title: {
+                type: 'string',
+                description: 'Recherche partielle sur le titre'
+              },
+              status: {
+                type: 'number',
+                description: 'Filtrer par statut (0=En cours, -1=Terminé)'
+              }
+            }
+          }
+        },
+        {
+          name: 'create_followup',
+          description: 'Créer un nouveau suivi commercial',
+          inputSchema: {
+            type: 'object',
+            required: ['title'],
+            properties: {
+              title: {
+                type: 'string',
+                description: 'Titre du suivi commercial'
+              },
+              status: {
+                type: 'number',
+                description: 'Statut (0=En cours, -1=Terminé, ou ID personnalisé)',
+                default: 0
+              }
+            }
+          }
+        },
+        {
+          name: 'get_followup',
+          description: 'Détails d\'un suivi commercial',
+          inputSchema: {
+            type: 'object',
+            required: ['followup_id'],
+            properties: {
+              followup_id: {
+                type: 'number',
+                description: 'ID du suivi commercial'
+              }
+            }
+          }
+        },
+        {
+          name: 'update_followup',
+          description: 'Modifier un suivi commercial',
+          inputSchema: {
+            type: 'object',
+            required: ['followup_id'],
+            properties: {
+              followup_id: {
+                type: 'number',
+                description: 'ID du suivi commercial à modifier'
+              },
+              title: {
+                type: 'string',
+                description: 'Nouveau titre'
+              },
+              status: {
+                type: 'number',
+                description: 'Nouveau statut'
+              }
+            }
+          }
+        },
+        {
+          name: 'delete_followup',
+          description: 'Supprimer un suivi commercial',
+          inputSchema: {
+            type: 'object',
+            required: ['followup_id'],
+            properties: {
+              followup_id: {
+                type: 'number',
+                description: 'ID du suivi commercial à supprimer'
+              }
+            }
+          }
+        },
+        {
+          name: 'send_invoice_email',
+          description: 'Envoyer facture par courriel',
+          inputSchema: {
+            type: 'object',
+            required: ['invoice_id', 'to'],
+            properties: {
+              invoice_id: {
+                type: 'number',
+                description: 'ID de la facture à envoyer'
+              },
+              to: {
+                type: 'string',
+                description: 'Adresse email destinataire'
+              },
+              cc: {
+                type: 'string',
+                description: 'Adresse(s) en copie'
+              },
+              bcc: {
+                type: 'string',
+                description: 'Adresse(s) en copie cachée'
+              },
+              subject: {
+                type: 'string',
+                description: 'Sujet de l\'email'
+              },
+              message: {
+                type: 'string',
+                description: 'Message personnalisé'
+              }
+            }
+          }
+        },
+
         // === MODULE COMPTE ===
         {
           name: 'get_account',
@@ -1577,6 +1703,20 @@ class FacturationProServer {
         case 'upload_purchase_file':
           return await this.handleUploadPurchaseFile(request.params.arguments);
 
+        // === MODULE SUIVIS COMMERCIAUX ===
+        case 'list_followups':
+          return await this.handleListFollowups(request.params.arguments);
+        case 'create_followup':
+          return await this.handleCreateFollowup(request.params.arguments);
+        case 'get_followup':
+          return await this.handleGetFollowup(request.params.arguments);
+        case 'update_followup':
+          return await this.handleUpdateFollowup(request.params.arguments);
+        case 'delete_followup':
+          return await this.handleDeleteFollowup(request.params.arguments);
+        case 'send_invoice_email':
+          return await this.handleSendInvoiceEmail(request.params.arguments);
+
         // === MODULE COMPTE ===
         case 'get_account':
           return await this.handleGetAccount(request.params.arguments);
@@ -1602,32 +1742,82 @@ class FacturationProServer {
           mimeType: 'application/json',
         },
         {
+          uri: `facturation://firms/${FIRM_ID}/suppliers`,
+          name: 'Fournisseurs de l\'entreprise',
+          description: 'Liste complète des fournisseurs',
+          mimeType: 'application/json',
+        },
+        {
           uri: `facturation://firms/${FIRM_ID}/categories`,
           name: 'Catégories de l\'entreprise',
           description: 'Accès aux catégories (achats/ventes)',
+          mimeType: 'application/json',
+        },
+        {
+          uri: `facturation://firms/${FIRM_ID}/products`,
+          name: 'Catalogue produits',
+          description: 'Liste complète des produits du catalogue',
+          mimeType: 'application/json',
+        },
+        {
+          uri: `facturation://firms/${FIRM_ID}/quotes`,
+          name: 'Devis en cours',
+          description: 'Liste des devis actifs et en attente',
+          mimeType: 'application/json',
+        },
+        {
+          uri: `facturation://firms/${FIRM_ID}/invoices`,
+          name: 'Factures récentes',
+          description: 'Factures des 30 derniers jours',
+          mimeType: 'application/json',
+        },
+        {
+          uri: `facturation://firms/${FIRM_ID}/purchases`,
+          name: 'Achats récents',
+          description: 'Achats des 30 derniers jours',
+          mimeType: 'application/json',
+        },
+        {
+          uri: `facturation://account`,
+          name: 'Informations du compte',
+          description: 'Détails du compte utilisateur',
           mimeType: 'application/json',
         }
       ]
     }));
 
     this.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-      const parts = request.params.uri.split('/');
-      const resource = parts[parts.length - 1];
-      const category = parts[parts.length - 2];
+      const uri = request.params.uri;
 
       try {
         let data: any;
-        switch (category) {
-          case 'customers':
-            const customersResponse = await this.apiClient.get(`/firms/${FIRM_ID}/customers.json?page=1&mode=company`);
-            data = customersResponse.data;
-            break;
-          case 'categories':
-            const categoriesResponse = await this.apiClient.get(`/firms/${FIRM_ID}/categories.json?page=1`);
-            data = categoriesResponse.data;
-            break;
-          default:
-            throw new McpError(ErrorCode.InvalidRequest, `Ressource inconnue: ${request.params.uri}`);
+
+        if (uri.includes('/customers')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/customers.json?page=1`);
+          data = response.data;
+        } else if (uri.includes('/suppliers')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/suppliers.json?page=1`);
+          data = response.data;
+        } else if (uri.includes('/categories')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/categories.json`);
+          data = response.data;
+        } else if (uri.includes('/products')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/products.json?page=1`);
+          data = response.data;
+        } else if (uri.includes('/quotes')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/quotes.json?page=1&status=0`);
+          data = response.data;
+        } else if (uri.includes('/invoices')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/invoices.json?page=1`);
+          data = response.data;
+        } else if (uri.includes('/purchases')) {
+          const response = await this.apiClient.get(`/firms/${FIRM_ID}/purchases.json?page=1`);
+          data = response.data;
+        } else if (uri.includes('account')) {
+          const response = await this.apiClient.get('/account.json');
+          data = response.data;
+        } else {
+          throw new McpError(ErrorCode.InvalidRequest, `Ressource inconnue: ${uri}`);
         }
 
         return {
@@ -2576,6 +2766,115 @@ class FacturationProServer {
         {
           type: 'text',
           text: `SUCCESS: Commandes d'abonnement\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  // === MODULE SUIVIS COMMERCIAUX ===
+
+  private async handleListFollowups(args: any) {
+    let url = `/firms/${FIRM_ID}/followups.json?`;
+    const params: string[] = [];
+
+    if (args.page) params.push(`page=${args.page}`);
+    if (args.title) params.push(`title=${encodeURIComponent(args.title)}`);
+    if (args.status !== undefined) params.push(`status=${args.status}`);
+
+    url += params.join('&');
+
+    const response = await this.apiClient.get(url);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Liste des suivis commerciaux\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  private async handleCreateFollowup(args: any) {
+    const followupData: any = {
+      title: args.title
+    };
+
+    if (args.status !== undefined) followupData.status = args.status;
+
+    const response = await this.apiClient.post(`/firms/${FIRM_ID}/followups.json`, followupData);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Suivi commercial créé avec succès\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  private async handleGetFollowup(args: any) {
+    const response = await this.apiClient.get(`/firms/${FIRM_ID}/followups/${args.followup_id}.json`);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Détails du suivi commercial ${args.followup_id}\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  private async handleUpdateFollowup(args: any) {
+    const followupData: any = {};
+
+    if (args.title) followupData.title = args.title;
+    if (args.status !== undefined) followupData.status = args.status;
+
+    const response = await this.apiClient.patch(`/firms/${FIRM_ID}/followups/${args.followup_id}.json`, followupData);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Suivi commercial ${args.followup_id} modifié avec succès\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  private async handleDeleteFollowup(args: any) {
+    const response = await this.apiClient.delete(`/firms/${FIRM_ID}/followups/${args.followup_id}.json`);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Suivi commercial ${args.followup_id} supprimé avec succès\n${JSON.stringify(response.data, null, 2)}`,
+        }
+      ]
+    };
+  }
+
+  private async handleSendInvoiceEmail(args: any) {
+    const emailData: any = {
+      to: args.to
+    };
+
+    if (args.cc) emailData.cc = args.cc;
+    if (args.bcc) emailData.bcc = args.bcc;
+    if (args.subject) emailData.subject = args.subject;
+    if (args.message) emailData.message = args.message;
+
+    const response = await this.apiClient.post(`/firms/${FIRM_ID}/invoices/${args.invoice_id}/email.json`, emailData);
+
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `SUCCESS: Facture ${args.invoice_id} envoyée par email avec succès\n${JSON.stringify(response.data, null, 2)}`,
         }
       ]
     };
