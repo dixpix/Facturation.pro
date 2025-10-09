@@ -8,8 +8,12 @@ const API_ID = process.env.FACTURATION_API_ID;
 const API_KEY = process.env.FACTURATION_API_KEY;
 const FIRM_ID = process.env.FACTURATION_FIRM_ID;
 const BASE_URL = process.env.FACTURATION_BASE_URL || 'https://www.facturation.pro';
+const USER_AGENT = process.env.FACTURATION_USER_AGENT;
 if (!API_ID || !API_KEY || !FIRM_ID) {
     throw new Error('FACTURATION_API_ID, FACTURATION_API_KEY and FACTURATION_FIRM_ID environment variables are required');
+}
+if (!USER_AGENT) {
+    throw new Error('FACTURATION_USER_AGENT environment variable is required (format: "AppName (contact@example.com)")');
 }
 // Définition des erreurs custom
 const isAxiosError = (error) => {
@@ -39,7 +43,7 @@ class FacturationProServer {
                 password: API_KEY,
             },
             headers: {
-                'User-Agent': 'Facturation-PRO-MCP-Server (contact@example.com)',
+                'User-Agent': USER_AGENT,
                 'Content-Type': 'application/json',
             },
         });

@@ -54,10 +54,14 @@ Le serveur compilé sera disponible dans `build/index.js`.
 Créez un fichier `.env` à la racine du projet :
 
 ```env
-FACTURATION_PRO_API_KEY=VotreIdentifiant:VotreCleAPI
-FACTURATION_PRO_FIRM_ID=123456
-FACTURATION_PRO_BASE_URL=https://www.facturation.pro
+FACTURATION_API_ID=VotreIdentifiant
+FACTURATION_API_KEY=VotreCleAPI
+FACTURATION_FIRM_ID=123456
+FACTURATION_USER_AGENT=MonApp (contact@example.com)
+FACTURATION_BASE_URL=https://www.facturation.pro
 ```
+
+**Important** : Le `USER_AGENT` doit contenir vos coordonnées de contact (nom de l'application et email) comme requis par l'API Facturation.PRO.
 
 ### Configuration MCP (Claude Desktop)
 
@@ -72,9 +76,11 @@ Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_deskt
         "/chemin/vers/facturation-pro-mcp-server/build/index.js"
       ],
       "env": {
-        "FACTURATION_PRO_API_KEY": "VotreIdentifiant:VotreCleAPI",
-        "FACTURATION_PRO_FIRM_ID": "123456",
-        "FACTURATION_PRO_BASE_URL": "https://www.facturation.pro"
+        "FACTURATION_API_ID": "VotreIdentifiant",
+        "FACTURATION_API_KEY": "VotreCleAPI",
+        "FACTURATION_FIRM_ID": "123456",
+        "FACTURATION_USER_AGENT": "MonApp (contact@example.com)",
+        "FACTURATION_BASE_URL": "https://www.facturation.pro"
       }
     }
   }
