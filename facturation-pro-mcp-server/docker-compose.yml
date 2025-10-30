@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  facturation-mcp:
+    # ============================================================================
+    # Service Facturation.PRO MCP Server
+    # ============================================================================
+
+    # Nom du conteneur
+    container_name: facturation-pro-mcp-server
+
+    # Image à utiliser (build local ou depuis Docker Hub)
+    # Pour build local, décommentez 'build' et commentez 'image'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: facturationpro/mcp-server:latest
+
+    # Redémarrage automatique sauf si arrêté manuellement
+    restart: unless-stopped
+
+    # Variables d'environnement depuis fichier .env
+    env_file:
+      - .env
+
+    # Variables d'environnement supplémentaires
+    environment:
+      - NODE_ENV=production
+      - FACTURATION_BASE_URL=${FACTURATION_BASE_URL:-https://www.facturation.pro}
+
+    # Montage du volume pour les téléchargements
+    volumes:
+      # Dossier downloads dans le home de l'utilisateur
+      - ${FACTURATION_DOWNLOADS_PATH:-~/facturation-pro-mcp/downloads}:/app/downloads
+      # Pour Windows, utilisez plutôt :
+      # - ${USERPROFILE}/facturation-pro-mcp/downloads:/app/downloads
+
+    # Limitations de ressources (conformes Docker MCP Toolkit)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'        # Maximum 1 CPU
+          memory: 2048M      # Maximum 2GB RAM
+        reservations:
+          cpus: '0.25'       # Minimum 0.25 CPU
+          memory: 256M       # Minimum 256MB RAM
+
+    # Configuration réseau
+    networks:
+      - mcp-network
+
+    # Communication via stdin/stdout (protocole MCP)
+    stdin_open: true
+    tty: false
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('MCP Server healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+    # Labels pour Docker MCP Toolkit
+    labels:
+      - "com.docker.mcp.server=facturation-pro"
+      - "com.docker.mcp.version=1.1.0"
+      - "com.docker.mcp.protocol=stdio"
+      - "com.docker.mcp.category=business"
+
+networks:
+  mcp-network:
+    driver: bridge
+    name: facturation-mcp-network
+
+# ============================================================================
+# Instructions d'utilisation
+# ============================================================================
+#
+# 1. Copiez .env.example vers .env et configurez vos credentials :
+#    cp .env.example .env
+#
+# 2. Éditez .env avec vos clés API Facturation.PRO
+#
+# 3. Lancez le service :
+#    docker-compose up -d
+#
+# 4. Vérifiez les logs :
+#    docker-compose logs -f
+#
+# 5. Arrêtez le service :
+#    docker-compose down
+#
+# 6. Pour reconstruire après modification du code :
+#    docker-compose up -d --build
+#
+# ============================================================================

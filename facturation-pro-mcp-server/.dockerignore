@@ -1,0 +1,79 @@
+# ============================================================================
+# .dockerignore - Fichiers à exclure du contexte Docker build
+# ============================================================================
+
+# Dépendances Node.js (seront installées dans le conteneur)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Fichiers de build (seront générés dans le conteneur)
+build/
+dist/
+*.tsbuildinfo
+
+# Fichiers d'environnement et secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+
+# Fichiers de configuration IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Fichiers de test
+tests/
+test/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+coverage/
+.nyc_output/
+
+# Documentation et fichiers de projet
+*.md
+!README.md
+docs/
+LICENSE
+.git/
+.gitignore
+.gitattributes
+
+# Fichiers Docker (éviter la récursion)
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# Fichiers de configuration spécifiques
+configs/
+scripts/
+.editorconfig
+.prettierrc
+.eslintrc*
+
+# Fichiers temporaires
+tmp/
+temp/
+*.tmp
+*.log
+logs/
+
+# Fichiers OS
+Thumbs.db
+Desktop.ini
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+*~

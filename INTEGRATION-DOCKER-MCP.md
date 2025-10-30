@@ -20,32 +20,32 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 ## 🎯 Phase 1 : Conteneurisation du serveur MCP
 
 ### 1.1 Dockerfile multi-stage
-- [ ] Créer `facturation-pro-mcp-server/Dockerfile`
-  - [ ] Stage 1 : Builder TypeScript
-  - [ ] Stage 2 : Runtime Node.js Alpine
-  - [ ] Configuration user non-root
-  - [ ] Health check intégré
-  - [ ] Optimisation couches Docker
-  - [ ] Labels et métadonnées
+- [x] Créer `facturation-pro-mcp-server/Dockerfile`
+  - [x] Stage 1 : Builder TypeScript
+  - [x] Stage 2 : Runtime Node.js Alpine
+  - [x] Configuration user non-root
+  - [x] Health check intégré
+  - [x] Optimisation couches Docker
+  - [x] Labels et métadonnées
 
 ### 1.2 Configuration Docker
-- [ ] Créer `facturation-pro-mcp-server/.dockerignore`
-  - [ ] Exclusion node_modules
-  - [ ] Exclusion fichiers de développement
-  - [ ] Exclusion .env et secrets
+- [x] Créer `facturation-pro-mcp-server/.dockerignore`
+  - [x] Exclusion node_modules
+  - [x] Exclusion fichiers de développement
+  - [x] Exclusion .env et secrets
 
 ### 1.3 Docker Compose
-- [ ] Créer `facturation-pro-mcp-server/docker-compose.yml`
-  - [ ] Service MCP avec configuration réseau
-  - [ ] Montage volume downloads (`~/facturation-pro-mcp/downloads`)
-  - [ ] Variables d'environnement
-  - [ ] Limites ressources (1 CPU, 2GB RAM)
+- [x] Créer `facturation-pro-mcp-server/docker-compose.yml`
+  - [x] Service MCP avec configuration réseau
+  - [x] Montage volume downloads (`~/facturation-pro-mcp/downloads`)
+  - [x] Variables d'environnement
+  - [x] Limites ressources (1 CPU, 2GB RAM)
 
 ### 1.4 Template configuration
-- [ ] Créer `facturation-pro-mcp-server/.env.example`
-  - [ ] Documentation variables requises
-  - [ ] Valeurs d'exemple
-  - [ ] Instructions de configuration
+- [x] Créer `facturation-pro-mcp-server/.env.example`
+  - [x] Documentation variables requises
+  - [x] Valeurs d'exemple
+  - [x] Instructions de configuration
 
 ### 1.5 Tests initiaux Docker
 - [ ] Build de l'image Docker localement
