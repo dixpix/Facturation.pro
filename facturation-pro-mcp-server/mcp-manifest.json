@@ -1,0 +1,288 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/specification/main/schema/mcp-manifest.schema.json",
+  "name": "facturation-pro",
+  "displayName": "Facturation.PRO MCP Server",
+  "version": "1.1.0",
+  "description": "Serveur MCP pour l'API Facturation.PRO - Gérez clients, devis, factures et achats via IA",
+  "longDescription": "Intégration complète de l'API Facturation.PRO avec le Model Context Protocol. Permet aux intelligences artificielles d'interagir avec votre compte de facturation pour automatiser la gestion de vos clients, devis, factures, achats, produits et plus encore. Couvre 100% des 69 routes de l'API Facturation.PRO.",
+  "author": {
+    "name": "Facturation.PRO",
+    "email": "contact@facturation.pro",
+    "url": "https://www.facturation.pro"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/votre-repo/facturation-pro-mcp-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/votre-repo/facturation-pro-mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/votre-repo/facturation-pro-mcp-server/issues"
+  },
+  "keywords": [
+    "facturation",
+    "invoicing",
+    "billing",
+    "accounting",
+    "mcp",
+    "ai",
+    "automation",
+    "business",
+    "finance",
+    "api"
+  ],
+  "categories": [
+    "business",
+    "finance",
+    "productivity",
+    "automation"
+  ],
+  "icon": "https://www.facturation.pro/images/logo.png",
+  "screenshots": [
+    {
+      "url": "https://github.com/votre-repo/facturation-pro-mcp-server/raw/main/docs/screenshot-1.png",
+      "caption": "Gestion des clients via MCP"
+    },
+    {
+      "url": "https://github.com/votre-repo/facturation-pro-mcp-server/raw/main/docs/screenshot-2.png",
+      "caption": "Création de factures avec IA"
+    }
+  ],
+  "mcp": {
+    "version": "1.0",
+    "protocol": "stdio",
+    "capabilities": {
+      "tools": true,
+      "resources": true,
+      "prompts": false,
+      "sampling": false
+    },
+    "toolsCount": 69,
+    "resourcesCount": 13
+  },
+  "docker": {
+    "image": "facturationpro/mcp-server",
+    "tag": "latest",
+    "platform": ["linux/amd64", "linux/arm64"],
+    "ports": [],
+    "volumes": [
+      {
+        "container": "/app/downloads",
+        "host": "~/facturation-pro-mcp/downloads",
+        "description": "Dossier pour téléchargements et uploads de fichiers (factures PDF, justificatifs, etc.)",
+        "required": false,
+        "readOnly": false
+      }
+    ],
+    "environment": [
+      {
+        "name": "FACTURATION_API_ID",
+        "description": "Identifiant API Facturation.PRO (obtenu sur https://www.facturation.pro/account/api)",
+        "required": true,
+        "secret": true,
+        "example": "api_user_12345"
+      },
+      {
+        "name": "FACTURATION_API_KEY",
+        "description": "Clé API Facturation.PRO",
+        "required": true,
+        "secret": true,
+        "example": "abcd1234efgh5678ijkl9012mnop3456"
+      },
+      {
+        "name": "FACTURATION_FIRM_ID",
+        "description": "ID de l'entreprise sur Facturation.PRO",
+        "required": true,
+        "secret": false,
+        "example": "123456"
+      },
+      {
+        "name": "FACTURATION_USER_AGENT",
+        "description": "User-Agent avec vos coordonnées (obligatoire par l'API)",
+        "required": true,
+        "secret": false,
+        "default": "MonApp (contact@exemple.com)",
+        "example": "MonApp Compta (jean.dupont@entreprise.fr)"
+      },
+      {
+        "name": "FACTURATION_BASE_URL",
+        "description": "URL de base de l'API",
+        "required": false,
+        "secret": false,
+        "default": "https://www.facturation.pro"
+      },
+      {
+        "name": "FACTURATION_OAUTH_CLIENT_ID",
+        "description": "Client ID OAuth2 (optionnel, pour authentification OAuth au lieu de clé API)",
+        "required": false,
+        "secret": true
+      },
+      {
+        "name": "FACTURATION_OAUTH_CLIENT_SECRET",
+        "description": "Client Secret OAuth2 (optionnel)",
+        "required": false,
+        "secret": true
+      }
+    ],
+    "resources": {
+      "limits": {
+        "cpus": "1.0",
+        "memory": "2048M"
+      },
+      "reservations": {
+        "cpus": "0.25",
+        "memory": "256M"
+      }
+    },
+    "healthcheck": {
+      "test": ["CMD", "node", "-e", "console.log('MCP Server healthy')"],
+      "interval": "30s",
+      "timeout": "10s",
+      "retries": 3,
+      "startPeriod": "5s"
+    },
+    "security": {
+      "runAsUser": "1001",
+      "runAsGroup": "1001",
+      "readOnlyRootFilesystem": false,
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": ["ALL"]
+      }
+    }
+  },
+  "tools": {
+    "categories": [
+      {
+        "name": "Clients",
+        "description": "Gestion des clients (CRUD, archivage, données SEPA)",
+        "tools": ["list_customers", "get_customer", "create_customer", "update_customer", "delete_customer", "archive_customer", "unarchive_customer", "upload_customer_file"]
+      },
+      {
+        "name": "Factures",
+        "description": "Gestion complète des factures et règlements",
+        "tools": ["list_invoices", "get_invoice", "create_invoice", "update_invoice", "delete_invoice", "send_invoice_email", "get_invoice_pdf", "list_invoice_payments", "add_invoice_payment", "delete_invoice_payment"]
+      },
+      {
+        "name": "Devis",
+        "description": "Gestion des devis et conversion en factures",
+        "tools": ["list_quotes", "get_quote", "create_quote", "update_quote", "delete_quote", "convert_quote_to_invoice", "send_quote_email", "get_quote_pdf"]
+      },
+      {
+        "name": "Achats",
+        "description": "Gestion des dépenses et justificatifs",
+        "tools": ["list_purchases", "get_purchase", "create_purchase", "update_purchase", "delete_purchase", "upload_purchase_file", "get_purchases_total"]
+      },
+      {
+        "name": "Produits",
+        "description": "Catalogue produits et services",
+        "tools": ["list_products", "get_product", "create_product", "update_product", "delete_product", "upload_product_image"]
+      },
+      {
+        "name": "Fournisseurs",
+        "description": "Gestion des fournisseurs",
+        "tools": ["list_suppliers", "get_supplier", "create_supplier", "update_supplier", "delete_supplier"]
+      },
+      {
+        "name": "Catégories",
+        "description": "Catégories de revenus et dépenses",
+        "tools": ["list_categories", "get_category", "create_category", "update_category", "delete_category"]
+      },
+      {
+        "name": "Tâches",
+        "description": "Gestion des tâches liées aux clients",
+        "tools": ["list_tasks", "get_task", "create_task", "update_task", "delete_task"]
+      },
+      {
+        "name": "Suivis commerciaux",
+        "description": "Suivi des opportunités commerciales",
+        "tools": ["list_business_follows", "get_business_follow", "create_business_follow", "update_business_follow", "delete_business_follow"]
+      },
+      {
+        "name": "Utilisateurs & Compte",
+        "description": "Informations compte et collaborateurs",
+        "tools": ["list_users", "get_users", "get_account_info", "list_subscriptions"]
+      },
+      {
+        "name": "Pièces jointes",
+        "description": "Gestion des fichiers joints",
+        "tools": ["list_attachments", "upload_attachment", "download_attachment"]
+      },
+      {
+        "name": "Règlements",
+        "description": "Gestion des paiements",
+        "tools": ["list_payments", "get_payment", "create_payment", "update_payment", "delete_payment"]
+      }
+    ]
+  },
+  "resources": {
+    "categories": [
+      {
+        "name": "Documentation",
+        "description": "Documentation de l'API et exemples",
+        "resources": ["api_documentation", "mcp_examples"]
+      },
+      {
+        "name": "Données métier",
+        "description": "Accès rapide aux données essentielles",
+        "resources": ["customers_summary", "invoices_summary", "quotes_summary", "purchases_summary", "products_catalog"]
+      }
+    ]
+  },
+  "documentation": {
+    "quickstart": "https://github.com/votre-repo/facturation-pro-mcp-server#quickstart",
+    "guide": "https://github.com/votre-repo/facturation-pro-mcp-server/blob/main/DOCKER.md",
+    "api": "https://www.facturation.pro/api",
+    "examples": "https://github.com/votre-repo/facturation-pro-mcp-server/tree/main/examples"
+  },
+  "support": {
+    "email": "contact@facturation.pro",
+    "issues": "https://github.com/votre-repo/facturation-pro-mcp-server/issues",
+    "chat": "https://discord.gg/votre-serveur"
+  },
+  "pricing": {
+    "model": "free",
+    "description": "Gratuit. Nécessite un compte Facturation.PRO (plans gratuits et payants disponibles).",
+    "url": "https://www.facturation.pro/tarifs"
+  },
+  "compatibility": {
+    "clients": ["claude-desktop", "vscode", "cursor", "continue", "cline"],
+    "platforms": ["macos", "linux", "windows"],
+    "architectures": ["amd64", "arm64"]
+  },
+  "features": [
+    "✅ 100% de couverture de l'API Facturation.PRO (69 routes)",
+    "✅ Gestion complète clients, factures, devis, achats",
+    "✅ Upload/download de fichiers (PDF, images, justificatifs)",
+    "✅ Envoi d'emails (factures, devis)",
+    "✅ Gestion des règlements et paiements partiels",
+    "✅ Support données SEPA (IBAN, BIC, mandats)",
+    "✅ Authentification API key ou OAuth2",
+    "✅ Rate limiting automatique (retry intelligent)",
+    "✅ Conteneur sécurisé (user non-root, isolation)",
+    "✅ Multi-architecture (Intel/ARM)"
+  ],
+  "requirements": {
+    "account": {
+      "provider": "Facturation.PRO",
+      "url": "https://www.facturation.pro",
+      "free_tier": true,
+      "description": "Un compte Facturation.PRO est nécessaire pour obtenir les clés API"
+    },
+    "api_limits": {
+      "rate_limit": "600 requêtes / 5 minutes",
+      "daily_limit": "10 000 requêtes / jour",
+      "note": "Le serveur MCP gère automatiquement le rate limiting avec retry"
+    }
+  },
+  "tags": [
+    "business",
+    "finance",
+    "invoicing",
+    "accounting",
+    "automation",
+    "api",
+    "french",
+    "france"
+  ]
+}

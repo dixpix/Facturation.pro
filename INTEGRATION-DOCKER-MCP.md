@@ -60,23 +60,23 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 ## 🔧 Phase 2 : Intégration Docker MCP Toolkit
 
 ### 2.1 Manifeste Docker MCP
-- [ ] Créer `facturation-pro-mcp-server/mcp-manifest.json`
-  - [ ] Métadonnées (nom, version, description)
-  - [ ] Catégories et tags
-  - [ ] Configuration ressources CPU/RAM
-  - [ ] Permissions système de fichiers
-  - [ ] Documentation utilisateur
+- [x] Créer `facturation-pro-mcp-server/mcp-manifest.json`
+  - [x] Métadonnées (nom, version, description)
+  - [x] Catégories et tags (12 catégories d'outils)
+  - [x] Configuration ressources CPU/RAM (1 CPU, 2GB)
+  - [x] Permissions système de fichiers (volume downloads)
+  - [x] Documentation utilisateur (quickstart, guides)
 
 ### 2.2 Configuration Gateway
-- [ ] Créer `facturation-pro-mcp-server/docker-mcp-config.json`
-  - [ ] Configuration gateway Docker MCP
-  - [ ] Mapping outils MCP (69 outils)
-  - [ ] Politique de sécurité
-  - [ ] Configuration stdio transport
+- [x] Créer `facturation-pro-mcp-server/docker-mcp-config.json`
+  - [x] Configuration gateway Docker MCP
+  - [x] Mapping outils MCP (69 outils avec prefixes)
+  - [x] Politique de sécurité (isolation, filtering)
+  - [x] Configuration stdio transport
 
 ### 2.3 Validation compatibilité
-- [ ] Test avec `docker mcp` CLI
-- [ ] Validation manifeste
+- [ ] Test avec `docker mcp` CLI (nécessite Docker Desktop 4.30+)
+- [ ] Validation manifeste JSON schema
 - [ ] Test enregistrement dans le toolkit
 
 **Commit** : `feat: Add Docker MCP Toolkit integration manifests`

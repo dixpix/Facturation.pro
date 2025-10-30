@@ -1,0 +1,258 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/specification/main/schema/gateway-config.schema.json",
+  "version": "1.0",
+  "server": {
+    "name": "facturation-pro",
+    "displayName": "Facturation.PRO",
+    "description": "Serveur MCP pour l'API Facturation.PRO",
+    "version": "1.1.0"
+  },
+  "transport": {
+    "type": "stdio",
+    "command": "node",
+    "args": ["/app/build/facturation-pro-mcp-server/index.js"],
+    "workingDirectory": "/app"
+  },
+  "docker": {
+    "image": "facturationpro/mcp-server:latest",
+    "containerName": "facturation-pro-mcp",
+    "restart": "unless-stopped",
+    "network": "mcp-network",
+    "volumes": [
+      {
+        "type": "bind",
+        "source": "${HOME}/facturation-pro-mcp/downloads",
+        "target": "/app/downloads",
+        "readOnly": false
+      }
+    ],
+    "environment": {
+      "NODE_ENV": "production",
+      "FACTURATION_BASE_URL": "${FACTURATION_BASE_URL:-https://www.facturation.pro}"
+    },
+    "resources": {
+      "limits": {
+        "cpus": "1.0",
+        "memory": "2048M"
+      },
+      "reservations": {
+        "cpus": "0.25",
+        "memory": "256M"
+      }
+    },
+    "security": {
+      "user": "1001:1001",
+      "readOnlyRootFilesystem": false,
+      "noNewPrivileges": true,
+      "capDrop": ["ALL"]
+    }
+  },
+  "gateway": {
+    "enabled": true,
+    "toolPrefix": "facturation_",
+    "resourcePrefix": "facturation://",
+    "passthrough": true,
+    "timeout": 30000,
+    "retries": {
+      "maxAttempts": 3,
+      "backoff": "exponential",
+      "initialDelay": 1000,
+      "maxDelay": 10000
+    },
+    "rateLimit": {
+      "enabled": true,
+      "requests": 600,
+      "window": 300000,
+      "strategy": "sliding-window",
+      "queueRequests": true
+    }
+  },
+  "tools": {
+    "discovery": "automatic",
+    "validation": "strict",
+    "categories": [
+      "clients",
+      "invoices",
+      "quotes",
+      "purchases",
+      "products",
+      "suppliers",
+      "categories",
+      "tasks",
+      "business_follows",
+      "users",
+      "attachments",
+      "payments"
+    ],
+    "filter": {
+      "include": ["*"],
+      "exclude": []
+    },
+    "transform": {
+      "enabled": false
+    }
+  },
+  "resources": {
+    "discovery": "automatic",
+    "validation": "strict",
+    "categories": [
+      "documentation",
+      "summaries"
+    ],
+    "filter": {
+      "include": ["*"],
+      "exclude": []
+    }
+  },
+  "security": {
+    "authentication": {
+      "type": "api_key",
+      "location": "environment",
+      "variables": [
+        "FACTURATION_API_ID",
+        "FACTURATION_API_KEY",
+        "FACTURATION_FIRM_ID"
+      ]
+    },
+    "encryption": {
+      "secrets": true,
+      "transport": "tls"
+    },
+    "isolation": {
+      "filesystem": {
+        "readOnly": ["/app/build", "/app/node_modules"],
+        "readWrite": ["/app/downloads"],
+        "noAccess": ["/etc", "/var", "/tmp", "/root"]
+      },
+      "network": {
+        "allowedHosts": ["www.facturation.pro", "facturation.pro"],
+        "blockPrivateNetworks": true
+      }
+    },
+    "contentFiltering": {
+      "enabled": true,
+      "blockPatterns": [
+        "password",
+        "secret",
+        "private_key",
+        "api_key",
+        "token"
+      ],
+      "redactSecrets": true
+    }
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "outputs": ["stderr"],
+    "includeTimestamp": true,
+    "includeToolName": true,
+    "sanitizeSecrets": true
+  },
+  "monitoring": {
+    "healthcheck": {
+      "enabled": true,
+      "interval": 30000,
+      "timeout": 10000,
+      "retries": 3
+    },
+    "metrics": {
+      "enabled": true,
+      "collectInterval": 60000,
+      "export": false
+    }
+  },
+  "client": {
+    "compatibility": {
+      "claude-desktop": {
+        "supported": true,
+        "minVersion": "0.5.0",
+        "config": {
+          "command": "docker",
+          "args": ["mcp", "gateway", "run", "facturation-pro"]
+        }
+      },
+      "vscode": {
+        "supported": true,
+        "minVersion": "1.85.0",
+        "config": {
+          "type": "docker-mcp",
+          "server": "facturation-pro"
+        }
+      },
+      "cursor": {
+        "supported": true,
+        "minVersion": "0.30.0",
+        "config": {
+          "mcp": {
+            "facturation-pro": {
+              "command": "docker",
+              "args": ["mcp", "gateway", "run", "facturation-pro"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "updates": {
+    "checkInterval": 86400000,
+    "autoUpdate": false,
+    "channel": "stable"
+  },
+  "examples": {
+    "tools": [
+      {
+        "name": "list_customers",
+        "description": "Lister tous les clients",
+        "input": {}
+      },
+      {
+        "name": "create_invoice",
+        "description": "Créer une facture pour un client",
+        "input": {
+          "customer_id": 12345,
+          "title": "Prestation de conseil",
+          "items": [
+            {
+              "title": "Consultation",
+              "quantity": 2,
+              "unit_price": 150.00
+            }
+          ]
+        }
+      },
+      {
+        "name": "send_invoice_email",
+        "description": "Envoyer une facture par email",
+        "input": {
+          "invoice_id": 67890,
+          "to": "client@exemple.com",
+          "subject": "Votre facture"
+        }
+      }
+    ],
+    "resources": [
+      {
+        "uri": "facturation://customers/summary",
+        "description": "Résumé de tous les clients"
+      },
+      {
+        "uri": "facturation://invoices/unpaid",
+        "description": "Liste des factures impayées"
+      }
+    ]
+  },
+  "metadata": {
+    "build": {
+      "timestamp": "2025-10-30T12:00:00Z",
+      "version": "1.1.0",
+      "commit": "main"
+    },
+    "docker": {
+      "buildImage": "node:20-alpine",
+      "baseImage": "node:20-alpine",
+      "layers": 2,
+      "size": "142MB"
+    }
+  }
+}
