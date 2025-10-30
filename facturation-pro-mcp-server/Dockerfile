@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # ============================================================================
 # Stage 1: Builder - Compilation TypeScript
 # ============================================================================
@@ -21,7 +19,8 @@ COPY package*.json ./
 COPY tsconfig.json ./
 
 # Installer TOUTES les dépendances (y compris devDependencies pour build)
-RUN npm ci
+# Utilisation de npm install car npm ci peut avoir des timeouts réseau
+RUN npm install --production=false --no-audit --no-fund
 
 # Copier le code source
 COPY src ./src

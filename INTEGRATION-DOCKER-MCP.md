@@ -48,10 +48,10 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
   - [x] Instructions de configuration
 
 ### 1.5 Tests initiaux Docker
-- [ ] Build de l'image Docker localement
-- [ ] Test lancement conteneur
-- [ ] Validation health check
-- [ ] Test communication stdio
+- [x] Build de l'image Docker localement (142MB)
+- [x] Test lancement conteneur
+- [x] Validation health check
+- [ ] Test communication stdio (nécessite variables d'environnement)
 
 **Commit** : `feat: Add Docker containerization support`
 
