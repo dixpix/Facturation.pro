@@ -1,0 +1,217 @@
+{
+  "mcp": {
+    "servers": {
+      "facturation-pro": {
+        "type": "stdio",
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-i",
+          "--name", "facturation-pro-mcp-vscode",
+          "-v", "${env:HOME}/facturation-pro-mcp/downloads:/app/downloads",
+          "-e", "FACTURATION_API_ID=${env:FACTURATION_API_ID}",
+          "-e", "FACTURATION_API_KEY=${env:FACTURATION_API_KEY}",
+          "-e", "FACTURATION_FIRM_ID=${env:FACTURATION_FIRM_ID}",
+          "-e", "FACTURATION_USER_AGENT=${env:FACTURATION_USER_AGENT}",
+          "-e", "FACTURATION_BASE_URL=https://www.facturation.pro",
+          "facturation-pro-mcp-server:latest"
+        ],
+        "enabled": true,
+        "autoStart": false
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Instructions d'installation pour Visual Studio Code
+// =============================================================================
+//
+// Ce fichier configure VS Code Copilot Agent pour utiliser le serveur MCP
+// Facturation.PRO via Docker.
+//
+// ## Prérequis
+//
+// 1. Visual Studio Code version 1.85.0 ou supérieure
+// 2. Extension "GitHub Copilot" installée
+// 3. Docker Desktop installé et lancé
+// 4. Image Docker buildée (voir ci-dessous)
+//
+// ## Étape 1 : Build de l'image Docker
+//
+// cd /chemin/vers/facturation-pro-mcp-server
+// docker build -t facturation-pro-mcp-server:latest .
+//
+// ## Étape 2 : Créer le dossier downloads
+//
+// mkdir -p ~/facturation-pro-mcp/downloads
+//
+// ## Étape 3 : Configuration des variables d'environnement
+//
+// Créez ou éditez le fichier .env dans votre répertoire HOME ou projet :
+//
+// FACTURATION_API_ID=votre_identifiant_api
+// FACTURATION_API_KEY=votre_cle_api
+// FACTURATION_FIRM_ID=votre_firm_id
+// FACTURATION_USER_AGENT="VS Code Copilot (votre-email@exemple.com)"
+//
+// ## Étape 4 : Configuration VS Code
+//
+// ### Méthode A : Configuration utilisateur (recommandé)
+//
+// 1. Ouvrez VS Code
+// 2. Ouvrez la palette de commandes (Cmd+Shift+P / Ctrl+Shift+P)
+// 3. Cherchez "Preferences: Open User Settings (JSON)"
+// 4. Ajoutez la section "mcp" depuis ce fichier
+//
+// ### Méthode B : Configuration workspace
+//
+// 1. Créez ou éditez .vscode/settings.json dans votre projet
+// 2. Copiez la section "mcp" depuis ce fichier
+//
+// ## Étape 5 : Activer le serveur MCP
+//
+// 1. Redémarrez VS Code
+// 2. Ouvrez la palette de commandes
+// 3. Cherchez "MCP: Connect to Server"
+// 4. Sélectionnez "facturation-pro"
+//
+// ## Alternative : Configuration simplifiée avec .env local
+//
+// Si vos variables d'environnement sont dans un fichier .env local :
+//
+// {
+//   "mcp": {
+//     "servers": {
+//       "facturation-pro": {
+//         "type": "stdio",
+//         "command": "docker",
+//         "args": [
+//           "run", "--rm", "-i",
+//           "--env-file", "${workspaceFolder}/.env",
+//           "-v", "${env:HOME}/facturation-pro-mcp/downloads:/app/downloads",
+//           "facturation-pro-mcp-server:latest"
+//         ],
+//         "enabled": true
+//       }
+//     }
+//   }
+// }
+//
+// ## Alternative : Docker Compose
+//
+// Pour utiliser docker-compose au lieu de docker run :
+//
+// {
+//   "mcp": {
+//     "servers": {
+//       "facturation-pro": {
+//         "type": "stdio",
+//         "command": "docker-compose",
+//         "args": [
+//           "-f", "${workspaceFolder}/docker-compose.yml",
+//           "run", "--rm", "facturation-mcp"
+//         ],
+//         "enabled": true
+//       }
+//     }
+//   }
+// }
+//
+// ## Alternative : Docker MCP Gateway (Docker Desktop 4.30+)
+//
+// Si vous avez Docker Desktop avec le MCP Toolkit :
+//
+// {
+//   "mcp": {
+//     "servers": {
+//       "facturation-pro": {
+//         "type": "stdio",
+//         "command": "docker",
+//         "args": ["mcp", "gateway", "run", "facturation-pro"],
+//         "enabled": true,
+//         "autoStart": true
+//       }
+//     }
+//   }
+// }
+//
+// =============================================================================
+// Utilisation avec Copilot Agent
+// =============================================================================
+//
+// Une fois configuré, vous pouvez utiliser le serveur MCP via Copilot :
+//
+// 1. Ouvrez le chat Copilot (Cmd+I / Ctrl+I)
+// 2. Tapez @ pour voir les agents disponibles
+// 3. Sélectionnez @facturation-pro
+// 4. Posez vos questions ou demandes :
+//
+// Exemples :
+// - @facturation-pro Liste mes clients
+// - @facturation-pro Crée une facture pour le client 12345
+// - @facturation-pro Affiche les factures impayées
+//
+// =============================================================================
+// Configuration avancée
+// =============================================================================
+//
+// ## Limitation mémoire
+//
+// Pour limiter les ressources Docker :
+//
+// "args": [
+//   "run", "--rm", "-i",
+//   "--memory=2g",
+//   "--cpus=1",
+//   ...
+// ]
+//
+// ## Logs Docker
+//
+// Pour activer les logs verbeux :
+//
+// "args": [
+//   "run", "--rm", "-i",
+//   "-e", "LOG_LEVEL=debug",
+//   ...
+// ]
+//
+// ## Timeout personnalisé
+//
+// {
+//   "mcp": {
+//     "servers": {
+//       "facturation-pro": {
+//         ...
+//         "timeout": 60000,  // 60 secondes
+//         "retries": 3
+//       }
+//     }
+//   }
+// }
+//
+// =============================================================================
+// Dépannage
+// =============================================================================
+//
+// Problème : "Server failed to start"
+// Solution : Vérifiez que Docker Desktop est lancé et l'image buildée
+//
+// Problème : "Environment variables not set"
+// Solution : Vérifiez votre fichier .env ou les variables d'environnement système
+//
+// Problème : "Permission denied" sur le volume
+// Solution : Vérifiez les permissions du dossier ~/facturation-pro-mcp/downloads
+//
+// Problème : "Connection timeout"
+// Solution : Augmentez le timeout dans la configuration
+//
+// ## Logs VS Code MCP
+//
+// Les logs sont disponibles dans :
+// - Output panel > MCP (View > Output, sélectionnez "MCP" dans le dropdown)
+// - Developer Tools (Help > Toggle Developer Tools) > Console
+//
+// =============================================================================

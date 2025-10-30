@@ -120,28 +120,32 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 ## 🖥️ Phase 4 : Configuration clients
 
 ### 4.1 Claude Desktop
-- [ ] Créer dossier `facturation-pro-mcp-server/configs/`
-- [ ] Créer `configs/claude-desktop.json`
-  - [ ] Configuration avec Docker MCP gateway
-  - [ ] Exemple variables d'environnement
-  - [ ] Instructions installation par OS
+- [x] Créer dossier `facturation-pro-mcp-server/configs/`
+- [x] Créer `configs/claude-desktop.json`
+  - [x] Configuration avec Docker MCP gateway
+  - [x] Exemple variables d'environnement
+  - [x] Instructions installation par OS (macOS, Linux, Windows)
+  - [x] 3 méthodes : docker run, docker-compose, gateway
 
 ### 4.2 Visual Studio Code
-- [ ] Créer `configs/vscode-mcp.json`
-  - [ ] Configuration Copilot Agent
-  - [ ] Intégration via gateway Docker
-  - [ ] Instructions activation
+- [x] Créer `configs/vscode-mcp.json`
+  - [x] Configuration Copilot Agent
+  - [x] Intégration via gateway Docker
+  - [x] Instructions activation
+  - [x] Exemples configuration avancée
 
 ### 4.3 Docker MCP Toolkit
-- [ ] Créer `configs/docker-mcp-toolkit.sh`
-  - [ ] Script enregistrement dans le toolkit
-  - [ ] Commandes `docker mcp` pour gestion
-  - [ ] Validation configuration
+- [x] Créer `configs/docker-mcp-toolkit.sh`
+  - [x] Script enregistrement dans le toolkit (exécutable)
+  - [x] Vérifications prérequis complètes
+  - [x] Création dossier downloads
+  - [x] Test connexion
+  - [x] Instructions de configuration
 
 ### 4.4 Tests intégration clients
-- [ ] Test avec Claude Desktop
+- [ ] Test avec Claude Desktop (nécessite vos vraies clés API)
 - [ ] Test avec VS Code (si disponible)
-- [ ] Test avec Ask Gordon
+- [ ] Test avec Ask Gordon (nécessite Docker Desktop 4.30+)
 
 **Commit** : `feat: Add client configurations for Claude Desktop and VS Code`
 

@@ -1,0 +1,129 @@
+{
+  "mcpServers": {
+    "facturation-pro": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--name", "facturation-pro-mcp",
+        "-v", "${HOME}/facturation-pro-mcp/downloads:/app/downloads",
+        "-e", "FACTURATION_API_ID",
+        "-e", "FACTURATION_API_KEY",
+        "-e", "FACTURATION_FIRM_ID",
+        "-e", "FACTURATION_USER_AGENT",
+        "-e", "FACTURATION_BASE_URL=https://www.facturation.pro",
+        "facturation-pro-mcp-server:latest"
+      ],
+      "env": {
+        "FACTURATION_API_ID": "votre_identifiant_api",
+        "FACTURATION_API_KEY": "votre_cle_api",
+        "FACTURATION_FIRM_ID": "votre_firm_id",
+        "FACTURATION_USER_AGENT": "Claude Desktop (votre-email@exemple.com)"
+      }
+    }
+  }
+}
+
+// =============================================================================
+// Instructions d'installation pour Claude Desktop
+// =============================================================================
+//
+// Ce fichier configure Claude Desktop pour utiliser le serveur MCP Facturation.PRO
+// via Docker. Suivez ces étapes pour l'installer :
+//
+// ## Étape 1 : Build de l'image Docker
+//
+// cd /chemin/vers/facturation-pro-mcp-server
+// docker build -t facturation-pro-mcp-server:latest .
+//
+// ## Étape 2 : Créer le dossier downloads
+//
+// mkdir -p ~/facturation-pro-mcp/downloads
+//
+// ## Étape 3 : Configuration Claude Desktop
+//
+// Copiez la section "mcpServers" ci-dessus dans votre fichier de configuration
+// Claude Desktop :
+//
+// ### macOS
+// ~/Library/Application Support/Claude/claude_desktop_config.json
+//
+// ### Windows
+// %APPDATA%\Claude\claude_desktop_config.json
+//
+// ### Linux
+// ~/.config/Claude/claude_desktop_config.json
+//
+// ## Étape 4 : Personnaliser les variables d'environnement
+//
+// Remplacez dans la section "env" :
+// - FACTURATION_API_ID : Votre identifiant API (obtenu sur https://www.facturation.pro/account/api)
+// - FACTURATION_API_KEY : Votre clé API
+// - FACTURATION_FIRM_ID : L'ID de votre entreprise
+// - FACTURATION_USER_AGENT : Votre nom d'application et email
+//
+// ## Étape 5 : Redémarrer Claude Desktop
+//
+// Fermez complètement Claude Desktop et relancez-le.
+// Le serveur MCP Facturation.PRO devrait maintenant être disponible.
+//
+// ## Vérification
+//
+// Vous pouvez vérifier les logs MCP dans :
+// - macOS : ~/Library/Logs/Claude/mcp*.log
+// - Windows : %APPDATA%\Claude\logs\mcp*.log
+// - Linux : ~/.config/Claude/logs/mcp*.log
+//
+// ## Utilisation alternative : Docker Compose
+//
+// Si vous préférez utiliser docker-compose, utilisez cette configuration :
+//
+// {
+//   "mcpServers": {
+//     "facturation-pro": {
+//       "command": "docker-compose",
+//       "args": [
+//         "-f", "/chemin/vers/facturation-pro-mcp-server/docker-compose.yml",
+//         "run", "--rm", "facturation-mcp"
+//       ]
+//     }
+//   }
+// }
+//
+// Note : Avec docker-compose, les variables d'environnement sont lues depuis
+// le fichier .env à la racine du projet.
+//
+// ## Utilisation avancée : Docker MCP Gateway
+//
+// Si vous avez Docker Desktop 4.30+ avec le MCP Toolkit installé :
+//
+// {
+//   "mcpServers": {
+//     "facturation-pro": {
+//       "command": "docker",
+//       "args": ["mcp", "gateway", "run", "facturation-pro"]
+//     }
+//   }
+// }
+//
+// Cette méthode nécessite d'avoir préalablement enregistré le serveur dans
+// le toolkit avec le script configs/docker-mcp-toolkit.sh
+//
+// =============================================================================
+// Dépannage
+// =============================================================================
+//
+// Problème : "Error: FACTURATION_API_ID, FACTURATION_API_KEY and FACTURATION_FIRM_ID environment variables are required"
+// Solution : Vérifiez que les variables dans la section "env" sont correctement remplies
+//
+// Problème : "Cannot connect to the Docker daemon"
+// Solution : Assurez-vous que Docker Desktop est lancé
+//
+// Problème : "Image not found"
+// Solution : Buildez l'image avec : docker build -t facturation-pro-mcp-server:latest .
+//
+// Problème : Le serveur ne répond pas
+// Solution : Vérifiez les logs Docker : docker logs facturation-pro-mcp
+//
+// =============================================================================
