@@ -503,26 +503,41 @@ class FacturationProServer {
               },
               items: {
                 type: 'array',
-                description: 'Liste des lignes de devis',
+                description: `Liste des lignes de devis.
+FORMATAGE IMPORTANT:
+- Retours à la ligne: utiliser \\r\\n (ex: "Point 1\\r\\nPoint 2\\r\\nPoint 3")
+- Titres de section: quantity=0, unit_price=0, vat=0, style="title"
+- Listes à puces: commencer chaque ligne par "- "
+- Éviter les caractères Unicode (•, ◦)
+Exemple avec titre: {"quantity": 0, "title": "DÉVELOPPEMENT WEB", "unit_price": 0, "vat": 0, "style": "title"}
+Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 pages\\r\\n- Formation 1h", "unit_price": 1500, "vat": 0.2}`,
                 items: {
                   type: 'object',
                   required: ['title', 'quantity', 'unit_price', 'vat'],
                   properties: {
                     title: {
                       type: 'string',
-                      description: 'Libellé'
+                      description: 'Libellé (utilisez \\r\\n pour retours à la ligne, démarrez listes par "- ")'
                     },
                     quantity: {
                       type: 'number',
-                      description: 'Quantité'
+                      description: 'Quantité (mettre 0 pour ligne de titre sans montant)'
                     },
                     unit_price: {
                       type: 'number',
-                      description: 'Prix unitaire HT'
+                      description: 'Prix unitaire HT (mettre 0 pour ligne de titre)'
                     },
                     vat: {
                       type: 'number',
-                      description: 'Taux de TVA (ex: 0.2 pour 20%)'
+                      description: 'Taux de TVA (ex: 0.2 pour 20%, mettre 0 pour ligne de titre)'
+                    },
+                    style: {
+                      type: 'string',
+                      description: 'Style de ligne: "title" pour titre de section (avec quantity=0, unit_price=0, vat=0)'
+                    },
+                    position: {
+                      type: 'number',
+                      description: 'Position de la ligne (ordre d\'affichage)'
                     }
                   }
                 }
@@ -612,17 +627,49 @@ class FacturationProServer {
               },
               items: {
                 type: 'array',
-                description: 'Lignes de devis',
+                description: `Lignes de devis à modifier.
+FORMATAGE IMPORTANT:
+- Retours à la ligne: utiliser \\r\\n (ex: "Point 1\\r\\nPoint 2\\r\\nPoint 3")
+- Titres de section: quantity=0, unit_price=0, vat=0, style="title"
+- Listes à puces: commencer chaque ligne par "- "
+- Éviter les caractères Unicode (•, ◦)
+Exemple avec titre: {"quantity": 0, "title": "DÉVELOPPEMENT WEB", "unit_price": 0, "vat": 0, "style": "title"}
+Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 pages\\r\\n- Formation 1h", "unit_price": 1500, "vat": 0.2}`,
                 items: {
                   type: 'object',
                   properties: {
-                    id: { type: 'number' },
-                    position: { type: 'number' },
-                    title: { type: 'string' },
-                    quantity: { type: 'number' },
-                    unit_price: { type: 'number' },
-                    vat: { type: 'number' },
-                    _destroy: { type: 'string', description: '1 pour supprimer' }
+                    id: {
+                      type: 'number',
+                      description: 'ID de la ligne existante (obligatoire pour modifier une ligne)'
+                    },
+                    position: {
+                      type: 'number',
+                      description: 'Position de la ligne (ordre d\'affichage)'
+                    },
+                    title: {
+                      type: 'string',
+                      description: 'Libellé (utilisez \\r\\n pour retours à la ligne, démarrez listes par "- ")'
+                    },
+                    quantity: {
+                      type: 'number',
+                      description: 'Quantité (mettre 0 pour ligne de titre sans montant)'
+                    },
+                    unit_price: {
+                      type: 'number',
+                      description: 'Prix unitaire HT (mettre 0 pour ligne de titre)'
+                    },
+                    vat: {
+                      type: 'number',
+                      description: 'Taux de TVA (ex: 0.2 pour 20%, mettre 0 pour ligne de titre)'
+                    },
+                    style: {
+                      type: 'string',
+                      description: 'Style de ligne: "title" pour titre de section (avec quantity=0, unit_price=0, vat=0)'
+                    },
+                    _destroy: {
+                      type: 'string',
+                      description: 'Mettre "1" pour supprimer cette ligne du devis'
+                    }
                   }
                 }
               }
@@ -935,26 +982,41 @@ class FacturationProServer {
               },
               items: {
                 type: 'array',
-                description: 'Liste des lignes de facturation',
+                description: `Liste des lignes de facturation.
+FORMATAGE IMPORTANT:
+- Retours à la ligne: utiliser \\r\\n (ex: "Point 1\\r\\nPoint 2\\r\\nPoint 3")
+- Titres de section: quantity=0, unit_price=0, vat=0, style="title"
+- Listes à puces: commencer chaque ligne par "- "
+- Éviter les caractères Unicode (•, ◦)
+Exemple avec titre: {"quantity": 0, "title": "DÉVELOPPEMENT WEB", "unit_price": 0, "vat": 0, "style": "title"}
+Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 pages\\r\\n- Formation 1h", "unit_price": 1500, "vat": 0.2}`,
                 items: {
                   type: 'object',
                   required: ['title', 'quantity', 'unit_price', 'vat'],
                   properties: {
                     title: {
                       type: 'string',
-                      description: 'Libellé'
+                      description: 'Libellé (utilisez \\r\\n pour retours à la ligne, démarrez listes par "- ")'
                     },
                     quantity: {
                       type: 'number',
-                      description: 'Quantité'
+                      description: 'Quantité (mettre 0 pour ligne de titre sans montant)'
                     },
                     unit_price: {
                       type: 'number',
-                      description: 'Prix unitaire HT'
+                      description: 'Prix unitaire HT (mettre 0 pour ligne de titre)'
                     },
                     vat: {
                       type: 'number',
-                      description: 'Taux de TVA (ex: 0.2 pour 20%)'
+                      description: 'Taux de TVA (ex: 0.2 pour 20%, mettre 0 pour ligne de titre)'
+                    },
+                    style: {
+                      type: 'string',
+                      description: 'Style de ligne: "title" pour titre de section (avec quantity=0, unit_price=0, vat=0)'
+                    },
+                    position: {
+                      type: 'number',
+                      description: 'Position de la ligne (ordre d\'affichage)'
                     }
                   }
                 }
@@ -993,6 +1055,54 @@ class FacturationProServer {
               due_on: {
                 type: 'string',
                 description: 'Nouvelle date d\'échéance (YYYY-MM-DD)'
+              },
+              items: {
+                type: 'array',
+                description: `Lignes de facturation à modifier (disponible uniquement si facture en brouillon).
+FORMATAGE IMPORTANT:
+- Retours à la ligne: utiliser \\r\\n (ex: "Point 1\\r\\nPoint 2\\r\\nPoint 3")
+- Titres de section: quantity=0, unit_price=0, vat=0, style="title"
+- Listes à puces: commencer chaque ligne par "- "
+- Éviter les caractères Unicode (•, ◦)
+Exemple avec titre: {"quantity": 0, "title": "DÉVELOPPEMENT WEB", "unit_price": 0, "vat": 0, "style": "title"}
+Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 pages\\r\\n- Formation 1h", "unit_price": 1500, "vat": 0.2}`,
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'number',
+                      description: 'ID de la ligne existante (obligatoire pour modifier une ligne)'
+                    },
+                    position: {
+                      type: 'number',
+                      description: 'Position de la ligne (ordre d\'affichage)'
+                    },
+                    title: {
+                      type: 'string',
+                      description: 'Libellé (utilisez \\r\\n pour retours à la ligne, démarrez listes par "- ")'
+                    },
+                    quantity: {
+                      type: 'number',
+                      description: 'Quantité (mettre 0 pour ligne de titre sans montant)'
+                    },
+                    unit_price: {
+                      type: 'number',
+                      description: 'Prix unitaire HT (mettre 0 pour ligne de titre)'
+                    },
+                    vat: {
+                      type: 'number',
+                      description: 'Taux de TVA (ex: 0.2 pour 20%, mettre 0 pour ligne de titre)'
+                    },
+                    style: {
+                      type: 'string',
+                      description: 'Style de ligne: "title" pour titre de section (avec quantity=0, unit_price=0, vat=0)'
+                    },
+                    _destroy: {
+                      type: 'string',
+                      description: 'Mettre "1" pour supprimer cette ligne de la facture'
+                    }
+                  }
+                }
               }
             }
           }
