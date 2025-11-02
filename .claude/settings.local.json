@@ -7,7 +7,10 @@
       "Bash(rm:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(docker-compose down:*)",
+      "Read(//Users/pym/Library/Logs/Claude/**)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,13 +1,13 @@
 # Facturation.PRO - Intégration API
 
-Ce dépôt contient l'ensemble des outils d'intégration avec l'API de [Facturation.PRO](https://www.facturation.pro), un service de facturation en ligne pour les professionnels.
+Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API de [Facturation.PRO](https://www.facturation.pro), un service de facturation en ligne pour les professionnels. Il est basé sur la documentation officielle fournie par la société ainsi que son support au format .md proposé pour LLM.
 
 ## 📦 Contenu du projet
 
 - **[openapi.yaml](openapi.yaml)** : Spécification OpenAPI 3.0.3 complète de l'API Facturation.PRO (69 routes)
 - **[postman_collection.json](postman_collection.json)** : Collection Postman v2.1.0 pour tester l'API (100% de couverture)
 - **[facturation-pro-mcp-server/](facturation-pro-mcp-server/)** : Serveur MCP (Model Context Protocol) pour intégrer l'API avec les IA
-- **[facturation_pro_api.md](facturation_pro_api.md)** : Documentation complète de l'API au format Markdown optimisé pour les LLM
+- **[FACTURATION_PRO-DOCUMENTATION-LLM.md](FACTURATION_PRO-DOCUMENTATION-LLM.md)** : Documentation complète de l'API au format Markdown optimisé pour les LLM fourni par la documentation officielle (https://facturation.dev/llm)
 
 ## 🎯 Couverture de l'API
 

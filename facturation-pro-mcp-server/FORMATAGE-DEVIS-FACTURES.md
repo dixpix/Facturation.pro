@@ -396,8 +396,8 @@ Cette documentation s'applique aux outils MCP suivants :
 Pour toute question ou problème de formatage :
 
 - **Email** : contact@facturation.pro
-- **Documentation API** : https://www.facturation.pro/api
-- **Issues GitHub** : https://github.com/votre-repo/facturation-pro-mcp-server/issues
+- **Documentation API** : https://www.facturation.dev/
+- **Issues GitHub** : https://github.com/dixpix/facturation-pro-mcp-server/issues
 
 ---
 
