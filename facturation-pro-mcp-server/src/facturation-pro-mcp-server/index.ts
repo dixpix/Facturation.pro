@@ -240,6 +240,11 @@ class FacturationProServer {
                 type: 'string',
                 description: 'Code pays (FR, US, etc.)',
                 default: 'FR'
+              },
+              siret: {
+                type: 'string',
+                description: 'Numéro SIRET (14 chiffres). OBLIGATOIRE pour clients professionnels français (individual=false ET country=FR). Optionnel pour particuliers et étrangers. Format: 14 chiffres sans espaces.',
+                pattern: '^[0-9]{14}$'
               }
             }
           }
@@ -313,6 +318,11 @@ class FacturationProServer {
               country: {
                 type: 'string',
                 description: 'Nouveau pays'
+              },
+              siret: {
+                type: 'string',
+                description: 'Nouveau numéro SIRET (14 chiffres) pour professionnels français. Format: 14 chiffres sans espaces.',
+                pattern: '^[0-9]{14}$'
               },
               category_id: {
                 type: 'number',
@@ -2000,6 +2010,7 @@ Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 page
     if (args.first_name) customerData.first_name = args.first_name;
     if (args.last_name) customerData.last_name = args.last_name;
     if (args.civility) customerData.civility = args.civility;
+    if (args.siret) customerData.siret = args.siret;
 
     // Pour les particuliers, company_name doit être vide
     if (args.individual && customerData.company_name === undefined) {
@@ -2044,6 +2055,7 @@ Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 page
     if (args.city !== undefined) customerData.city = args.city;
     if (args.zip_code !== undefined) customerData.zip_code = args.zip_code;
     if (args.country !== undefined) customerData.country = args.country;
+    if (args.siret !== undefined) customerData.siret = args.siret;
     if (args.category_id !== undefined) customerData.category_id = args.category_id;
 
     const response = await this.apiClient.patch(`/firms/${FIRM_ID}/customers/${args.customer_id}.json`, customerData);

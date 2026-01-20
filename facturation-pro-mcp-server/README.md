@@ -289,9 +289,9 @@ Une fois configuré, redémarrez Claude Desktop. Les outils Facturation.pro sero
 ### Clients (8 outils)
 
 - `list_customers` : Liste des clients avec filtres
-- `create_customer` : Créer un client
+- `create_customer` : Créer un client (**⚠️ SIRET obligatoire pour professionnels français**)
 - `get_customer` : Détails d'un client (avec option SEPA)
-- `update_customer` : Modifier un client
+- `update_customer` : Modifier un client (**⚠️ SIRET obligatoire pour professionnels français**)
 - `delete_customer` : Supprimer un client
 - `archive_customer` : Archiver un client
 - `unarchive_customer` : Restaurer un client archivé

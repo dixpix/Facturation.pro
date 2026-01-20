@@ -517,6 +517,9 @@ paths:
                   type: string
                 siret:
                   type: string
+                  description: "Numéro SIRET (14 chiffres) - OBLIGATOIRE pour professionnels français"
+                  example: "85331855500010"
+                  pattern: "^[0-9]{14}$"
                 category_id:
                   type: integer
                 account_code:
@@ -617,6 +620,9 @@ paths:
                   type: string
                 siret:
                   type: string
+                  description: "Numéro SIRET (14 chiffres) - OBLIGATOIRE pour professionnels français"
+                  example: "85331855500010"
+                  pattern: "^[0-9]{14}$"
                 category_id:
                   type: integer
                 account_code:
@@ -2716,7 +2722,12 @@ components:
           description: N° TVA
         siret:
           type: string
-          description: Siret
+          description: |
+            Numéro SIRET (14 chiffres).
+            **OBLIGATOIRE pour les clients professionnels français** (individual=false ET country=FR).
+            Optionnel pour les particuliers et les professionnels étrangers.
+          example: "85331855500010"
+          pattern: "^[0-9]{14}$"
         category_id:
           type: integer
           description: Catégorie

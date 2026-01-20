@@ -442,7 +442,7 @@
                 }
               ]
             },
-            "description": "Liste paginée des clients professionnels"
+            "description": "Liste paginée des clients professionnels\n\n⚠️ IMPORTANT : Le numéro SIRET (14 chiffres) est obligatoire pour les clients professionnels français (individual=false, country=FR)."
           }
         },
         {
@@ -478,7 +478,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"company_name\": \"Tech Solutions SARL\",\n  \"individual\": false,\n  \"email\": \"contact@techsolutions.fr\",\n  \"phone\": \"01 23 45 67 89\",\n  \"street\": \"123 Rue de la Tech\",\n  \"city\": \"Paris\",\n  \"zip_code\": \"75001\",\n  \"country\": \"FR\",\n  \"vat_number\": \"\",\n  \"siret\": \"\"\n}",
+              "raw": "{\n  \"company_name\": \"Tech Solutions SARL\",\n  \"individual\": false,\n  \"email\": \"contact@techsolutions.fr\",\n  \"phone\": \"01 23 45 67 89\",\n  \"street\": \"123 Rue de la Tech\",\n  \"city\": \"Paris\",\n  \"zip_code\": \"75001\",\n  \"country\": \"FR\",\n  \"vat_number\": \"FR12345678901\",\n  \"siret\": \"85331855500010\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
