@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Facturation.PRO API - Collection Complète",
-    "description": "Collection exhaustive couvrant TOUTES les routes de l'API Facturation.PRO - Authentification Basic Auth (IdentifiantApi:CleApi)",
+    "name": "Facturation.pro API - Collection Complète",
+    "description": "Collection exhaustive couvrant TOUTES les routes de l'API Facturation.pro - Authentification Basic Auth (IdentifiantApi:CleApi)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "version": "2.0.0"
   },
@@ -10,7 +10,7 @@
       "key": "baseUrl",
       "value": "https://www.facturation.pro",
       "type": "string",
-      "description": "URL de base de l'API Facturation.PRO"
+      "description": "URL de base de l'API Facturation.pro"
     },
     {
       "key": "firmId",
@@ -22,13 +22,13 @@
       "key": "IDENTIFIANT_API",
       "value": "",
       "type": "string",
-      "description": "Identifiant API fourni par Facturation.PRO"
+      "description": "Identifiant API fourni par Facturation.pro"
     },
     {
       "key": "CLE_API",
       "value": "",
       "type": "string",
-      "description": "Clé API (mot de passe) fournie par Facturation.PRO"
+      "description": "Clé API (mot de passe) fournie par Facturation.pro"
     },
     {
       "key": "userAgent",

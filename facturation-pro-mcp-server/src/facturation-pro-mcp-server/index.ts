@@ -2998,7 +2998,7 @@ Exemple avec détails: {"quantity": 1, "title": "- Site responsive\\r\\n- 5 page
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('Facturation.PRO MCP server listening on stdio');
+    console.error('Facturation.pro MCP server listening on stdio');
   }
 }
 

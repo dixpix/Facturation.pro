@@ -1,10 +1,10 @@
-# Facturation.PRO - Intégration API
+# Facturation.pro - OpenAPI, Postman et MCP
 
-Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API de [Facturation.PRO](https://www.facturation.pro), un service de facturation en ligne pour les professionnels. Il est basé sur la documentation officielle fournie par la société ainsi que son support au format .md proposé pour LLM.
+Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API de [Facturation.pro](https://www.facturation.pro), un service de facturation en ligne pour les professionnels. Il est basé sur la documentation officielle fournie par la société ainsi que son support au format .md proposé pour LLM.
 
 ## 📦 Contenu du projet
 
-- **[openapi.yaml](openapi.yaml)** : Spécification OpenAPI 3.0.3 complète de l'API Facturation.PRO (69 routes)
+- **[openapi.yaml](openapi.yaml)** : Spécification OpenAPI 3.0.3 complète de l'API Facturation.pro (69 routes)
 - **[postman_collection.json](postman_collection.json)** : Collection Postman v2.1.0 pour tester l'API (100% de couverture)
 - **[facturation-pro-mcp-server/](facturation-pro-mcp-server/)** : Serveur MCP (Model Context Protocol) pour intégrer l'API avec les IA
 - **[FACTURATION_PRO-DOCUMENTATION-LLM.md](FACTURATION_PRO-DOCUMENTATION-LLM.md)** : Documentation complète de l'API au format Markdown optimisé pour les LLM fourni par la documentation officielle (https://facturation.dev/llm)
@@ -19,19 +19,19 @@ Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API
 
 ### Modules couverts
 
-✅ **Achats** (5 routes CRUD + 2 routes spéciales)
-✅ **Catégories** (5 routes CRUD)
-✅ **Clients** (8 routes incluant archivage et upload)
-✅ **Compte** (2 routes d'information)
-✅ **Devis** (8 routes incluant conversion et email)
-✅ **Factures** (11 routes incluant règlements et email)
-✅ **Fournisseurs** (5 routes CRUD)
-✅ **Pièces jointes** (3 routes de gestion)
-✅ **Produits** (6 routes CRUD + upload)
-✅ **Règlements** (5 routes de gestion)
-✅ **Suivis commerciaux** (5 routes CRUD)
-✅ **Tâches** (5 routes CRUD)
-✅ **Utilisateurs** (2 routes de liste)
+- ✅ **Achats** (5 routes CRUD + 2 routes spéciales)
+- ✅ **Catégories** (5 routes CRUD)
+- ✅ **Clients** (8 routes incluant archivage et upload)
+- ✅ **Compte** (2 routes d'information)
+- ✅ **Devis** (8 routes incluant conversion et email)
+- ✅ **Factures** (11 routes incluant règlements et email)
+- ✅ **Fournisseurs** (5 routes CRUD)
+- ✅ **Pièces jointes** (3 routes de gestion)
+- ✅ **Produits** (6 routes CRUD + upload)
+- ✅ **Règlements** (5 routes de gestion)
+- ✅ **Suivis commerciaux** (5 routes CRUD)
+- ✅ **Tâches** (5 routes CRUD)
+- ✅ **Utilisateurs** (2 routes de liste)
 
 ## 🚀 Démarrage rapide
 
@@ -81,7 +81,7 @@ npm run build
 
 ## 🔑 Authentification
 
-L'API Facturation.PRO utilise l'authentification HTTP Basic avec votre clé API :
+L'API Facturation.pro utilise l'authentification HTTP Basic avec votre clé API :
 
 ```bash
 curl -u IdentifiantApi:CleApi \
@@ -117,12 +117,12 @@ L'API permet la gestion complète des informations SEPA des clients via 4 champs
 
 ## 📝 Licence
 
-Ce projet contient des outils d'intégration avec l'API Facturation.PRO. Consultez les conditions d'utilisation de Facturation.PRO pour l'usage de l'API.
+Ce projet contient des outils d'intégration avec l'API Facturation.pro. Consultez les conditions d'utilisation de Facturation.pro pour l'usage de l'API.
 
 ## 🤝 Support
 
-- **Documentation officielle** : https://www.facturation.pro/api
-- **Support Facturation.PRO** : via votre compte
+- **Documentation officielle** : https://www.facturation.dev
+- **Support Facturation.pro** : via votre compte
 - **Issues GitHub** : Pour les outils d'intégration de ce dépôt
 
 ## 📊 Statut du projet
@@ -134,4 +134,4 @@ Ce projet contient des outils d'intégration avec l'API Facturation.PRO. Consult
 
 ---
 
-**Note** : Ce projet est maintenu à jour avec l'API Facturation.PRO. La dernière mise à jour majeure inclut le module "Suivis commerciaux" et les routes d'envoi d'emails pour devis et factures.
+**Note** : Ce projet est maintenu à jour avec l'API Facturation.pro. La dernière mise à jour majeure inclut le module "Suivis commerciaux" et les routes d'envoi d'emails pour devis et factures.

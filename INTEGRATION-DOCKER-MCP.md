@@ -1,15 +1,15 @@
 # 🐳 Plan d'intégration Docker MCP Toolkit
-# Facturation.PRO MCP Server
+# Facturation.pro MCP Server
 
 **Date de début** : 2025-10-30
 **Status** : 🚧 En cours
-**Objectif** : Intégrer le serveur MCP Facturation.PRO avec le Docker MCP Toolkit
+**Objectif** : Intégrer le serveur MCP Facturation.pro avec le Docker MCP Toolkit
 
 ---
 
 ## 📊 Vue d'ensemble
 
-Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une solution conteneurisée compatible avec le Docker MCP Toolkit, permettant :
+Ce plan d'intégration transforme le serveur MCP Facturation.pro existant en une solution conteneurisée compatible avec le Docker MCP Toolkit, permettant :
 - ✅ Distribution via le catalogue Docker public
 - ✅ Installation zero-friction (pas de Node.js requis)
 - ✅ Isolation et sécurité renforcées
@@ -87,7 +87,7 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 
 ### 3.1 Module OAuth Handler
 - [ ] Créer `facturation-pro-mcp-server/src/facturation-pro-mcp-server/auth/oauth-handler.ts`
-  - [ ] Gestion flux OAuth2 Facturation.PRO
+  - [ ] Gestion flux OAuth2 Facturation.pro
   - [ ] Échange code → token
   - [ ] Refresh automatique des tokens
   - [ ] Stockage sécurisé tokens
@@ -156,7 +156,7 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 ### 5.1 Tests d'intégration
 - [x] Créer dossier `facturation-pro-mcp-server/tests/`
 - [x] Créer `tests/integration-test.js` (10KB, exécutable)
-  - [x] Test connexion API Facturation.PRO
+  - [x] Test connexion API Facturation.pro
   - [x] Test listing clients (validation requise)
   - [x] Test pagination (headers X-Pagination)
   - [x] Test rate limiting (429 handling)
@@ -316,7 +316,7 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 
 - [Docker MCP Toolkit Documentation](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/)
 - [Model Context Protocol Specification](https://modelcontextprotocol.io/)
-- [Facturation.PRO API Documentation](https://www.facturation.pro/api)
+- [Facturation.pro API Documentation](https://www.facturation.pro/api)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 
 ---
@@ -330,7 +330,7 @@ Ce plan d'intégration transforme le serveur MCP Facturation.PRO existant en une
 - **Multi-arch** : Support amd64 + arm64 pour compatibilité Apple Silicon
 
 ### Points d'attention
-- L'API Facturation.PRO limite à 600 req/5min (déjà géré par retry)
+- L'API Facturation.pro limite à 600 req/5min (déjà géré par retry)
 - Volume downloads nécessite consentement utilisateur (documenté)
 - OAuth2 optionnel : fallback vers API key toujours disponible
 

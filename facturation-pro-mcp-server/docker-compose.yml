@@ -3,7 +3,7 @@ version: '3.8'
 services:
   facturation-mcp:
     # ============================================================================
-    # Service Facturation.PRO MCP Server
+    # Service Facturation.pro MCP Server
     # ============================================================================
 
     # Nom du conteneur
@@ -80,7 +80,7 @@ networks:
 # 1. Copiez .env.example vers .env et configurez vos credentials :
 #    cp .env.example .env
 #
-# 2. Éditez .env avec vos clés API Facturation.PRO
+# 2. Éditez .env avec vos clés API Facturation.pro
 #
 # 3. Lancez le service :
 #    docker-compose up -d

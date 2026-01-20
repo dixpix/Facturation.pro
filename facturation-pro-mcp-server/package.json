@@ -1,7 +1,7 @@
 {
   "name": "facturation-pro-mcp-server",
   "version": "1.0.0",
-  "description": "MCP server for Facturation.PRO API - Manage customers, quotes, invoices, and purchases",
+  "description": "MCP server for Facturation.pro API - Manage customers, quotes, invoices, and purchases",
   "type": "module",
   "main": "facturation-server.js",
   "scripts": {

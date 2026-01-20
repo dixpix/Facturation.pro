@@ -1,10 +1,10 @@
-# Facturation.PRO MCP Server
+# Facturation.pro MCP Server
 
-Serveur MCP (Model Context Protocol) pour intégrer l'API Facturation.PRO avec les intelligences artificielles compatibles MCP (Claude Desktop, Cline, etc.).
+Serveur MCP (Model Context Protocol) pour intégrer l'API Facturation.pro avec les intelligences artificielles compatibles MCP (Claude Desktop, Cline, etc.).
 
 ## 📋 Description
 
-Ce serveur expose **69 outils** correspondant à 100% des routes de l'API Facturation.PRO, permettant aux IA d'interagir directement avec votre compte de facturation.
+Ce serveur expose **69 outils** correspondant à 100% des routes de l'API Facturation.pro, permettant aux IA d'interagir directement avec votre compte de facturation.
 
 ## ✨ Fonctionnalités
 
@@ -30,7 +30,7 @@ Ce serveur expose **69 outils** correspondant à 100% des routes de l'API Factur
 
 - Node.js 16+
 - npm ou yarn
-- Compte Facturation.PRO avec clé API
+- Compte Facturation.pro avec clé API
 
 ### Installation des dépendances
 
@@ -61,7 +61,7 @@ FACTURATION_USER_AGENT=MonApp (contact@example.com)
 FACTURATION_BASE_URL=https://www.facturation.pro
 ```
 
-**Important** : Le `USER_AGENT` doit contenir vos coordonnées de contact (nom de l'application et email) comme requis par l'API Facturation.PRO.
+**Important** : Le `USER_AGENT` doit contenir vos coordonnées de contact (nom de l'application et email) comme requis par l'API Facturation.pro.
 
 ### Configuration MCP (Claude Desktop)
 
@@ -94,7 +94,7 @@ Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_deskt
 
 ### Obtenir vos identifiants API
 
-1. Connectez-vous à [Facturation.PRO](https://www.facturation.pro)
+1. Connectez-vous à [Facturation.pro](https://www.facturation.pro)
 2. Cliquez sur votre avatar en haut à droite
 3. Sélectionnez **"Clé API"**
 4. Notez votre **Identifiant API** et votre **Clé API**
@@ -112,7 +112,7 @@ Le serveur écoute sur stdin/stdout selon le protocole MCP.
 
 ### Utilisation avec Claude Desktop
 
-Une fois configuré, redémarrez Claude Desktop. Les outils Facturation.PRO seront automatiquement disponibles.
+Une fois configuré, redémarrez Claude Desktop. Les outils Facturation.pro seront automatiquement disponibles.
 
 **Exemples de commandes** :
 
@@ -312,12 +312,12 @@ Les contributions sont les bienvenues ! Assurez-vous que :
 
 ## 📄 Licence
 
-Ce serveur MCP est un outil d'intégration avec l'API Facturation.PRO. Consultez les conditions d'utilisation de Facturation.PRO pour l'usage de l'API.
+Ce serveur MCP est un outil d'intégration avec l'API Facturation.pro. Consultez les conditions d'utilisation de Facturation.pro pour l'usage de l'API.
 
 ## 🔗 Liens utiles
 
 - [Documentation MCP](https://modelcontextprotocol.io/)
-- [API Facturation.PRO](https://www.facturation.pro/api)
+- [API Facturation.pro](https://www.facturation.pro/api)
 - [Spécification OpenAPI](../openapi.yaml)
 - [Collection Postman](../postman_collection.json)
 
@@ -325,7 +325,7 @@ Ce serveur MCP est un outil d'intégration avec l'API Facturation.PRO. Consultez
 
 Pour les questions sur :
 - **Le serveur MCP** : Ouvrir une issue sur ce dépôt
-- **L'API Facturation.PRO** : Support officiel via votre compte
+- **L'API Facturation.pro** : Support officiel via votre compte
 - **Le protocole MCP** : [Documentation MCP](https://modelcontextprotocol.io/)
 
 ---

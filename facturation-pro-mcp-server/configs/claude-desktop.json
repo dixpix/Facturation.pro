@@ -29,7 +29,7 @@
 // Instructions d'installation pour Claude Desktop
 // =============================================================================
 //
-// Ce fichier configure Claude Desktop pour utiliser le serveur MCP Facturation.PRO
+// Ce fichier configure Claude Desktop pour utiliser le serveur MCP Facturation.pro
 // via Docker. Suivez ces étapes pour l'installer :
 //
 // ## Étape 1 : Build de l'image Docker
@@ -66,7 +66,7 @@
 // ## Étape 5 : Redémarrer Claude Desktop
 //
 // Fermez complètement Claude Desktop et relancez-le.
-// Le serveur MCP Facturation.PRO devrait maintenant être disponible.
+// Le serveur MCP Facturation.pro devrait maintenant être disponible.
 //
 // ## Vérification
 //

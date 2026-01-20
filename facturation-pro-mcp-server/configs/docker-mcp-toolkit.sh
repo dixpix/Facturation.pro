@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # =============================================================================
-# Script d'enregistrement Facturation.PRO MCP Server
+# Script d'enregistrement Facturation.pro MCP Server
 # dans le Docker MCP Toolkit
 # =============================================================================
 #
-# Ce script enregistre le serveur MCP Facturation.PRO dans le Docker MCP
+# Ce script enregistre le serveur MCP Facturation.pro dans le Docker MCP
 # Toolkit de Docker Desktop, permettant son utilisation avec Claude Desktop,
 # VS Code et autres clients MCP.
 #
@@ -34,7 +34,7 @@ IMAGE_NAME="facturation-pro-mcp-server:latest"
 DOWNLOADS_DIR="${HOME}/facturation-pro-mcp/downloads"
 
 echo -e "${BLUE}╔═══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║  Facturation.PRO MCP Server - Docker MCP Toolkit Setup       ║${NC}"
+echo -e "${BLUE}║  Facturation.pro MCP Server - Docker MCP Toolkit Setup       ║${NC}"
 echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -264,7 +264,7 @@ show_summary() {
     echo -e "${BLUE}║  Installation terminée !                                      ║${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "${GREEN}✓${NC} Le serveur MCP Facturation.PRO est prêt à être utilisé"
+    echo -e "${GREEN}✓${NC} Le serveur MCP Facturation.pro est prêt à être utilisé"
     echo ""
     echo "Prochaines étapes :"
     echo "  1. Configurez vos identifiants API dans votre client MCP"
@@ -278,7 +278,7 @@ show_summary() {
     echo ""
     echo "Support :"
     echo "  - Issues GitHub : https://github.com/votre-repo/issues"
-    echo "  - Support Facturation.PRO : https://www.facturation.pro"
+    echo "  - Support Facturation.pro : https://www.facturation.pro"
     echo ""
 }
 

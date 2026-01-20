@@ -16,7 +16,7 @@ const API_USERNAME = process.env.FACTURATION_API_ID;
 const API_PASSWORD = process.env.FACTURATION_API_KEY;
 const FIRM_ID = process.env.FACTURATION_FIRM_ID;
 const BASE_URL = process.env.FACTURATION_BASE_URL || 'https://www.facturation.pro';
-const USER_AGENT = process.env.USER_AGENT || 'Facturation-PRO-MCP-Server (contact@example.com)';
+const USER_AGENT = process.env.USER_AGENT || 'Facturation-Pro-MCP-Server (contact@example.com)';
 
 if (!API_USERNAME || !API_PASSWORD || !FIRM_ID) {
   console.error('FACTURATION_API_ID, FACTURATION_API_KEY and FACTURATION_FIRM_ID environment variables are required');
@@ -512,10 +512,10 @@ class FacturationProServer {
   }
 
   async run() {
-    console.log('[MCP] Facturation.PRO MCP server starting...');
+    console.log('[MCP] Facturation.pro MCP server starting...');
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.log('[MCP] Facturation.PRO MCP server listening on stdio');
+    console.log('[MCP] Facturation.pro MCP server listening on stdio');
   }
 }
 

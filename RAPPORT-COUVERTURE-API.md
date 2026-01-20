@@ -1,4 +1,4 @@
-# Rapport de Couverture de l'API Facturation.PRO
+# Rapport de Couverture de l'API Facturation.pro
 
 **Date** : 9 octobre 2025
 **Statut global** : ✅ **100% de couverture complète**

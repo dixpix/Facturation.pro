@@ -3,7 +3,7 @@
 # ============================================================================
 FROM node:20-alpine AS builder
 
-LABEL maintainer="Facturation.PRO MCP Server"
+LABEL maintainer="Facturation.pro MCP Server"
 LABEL description="Build stage for TypeScript compilation"
 
 # Installer les dépendances de build
@@ -36,10 +36,10 @@ RUN npm prune --production
 # ============================================================================
 FROM node:20-alpine
 
-LABEL org.opencontainers.image.title="Facturation.PRO MCP Server"
-LABEL org.opencontainers.image.description="MCP server for Facturation.PRO API - Docker MCP Toolkit compatible"
+LABEL org.opencontainers.image.title="Facturation.pro MCP Server"
+LABEL org.opencontainers.image.description="MCP server for Facturation.pro API - Docker MCP Toolkit compatible"
 LABEL org.opencontainers.image.version="1.1.0"
-LABEL org.opencontainers.image.vendor="Facturation.PRO"
+LABEL org.opencontainers.image.vendor="Facturation.pro"
 LABEL org.opencontainers.image.licenses="See LICENSE"
 LABEL org.opencontainers.image.source="https://github.com/votre-repo/facturation-pro-mcp-server"
 LABEL com.docker.mcp.version="1.0"

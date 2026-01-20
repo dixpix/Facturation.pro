@@ -1,6 +1,6 @@
 # Guide de formatage des devis et factures
 
-Ce guide explique comment formater correctement les lignes de devis et factures via l'API Facturation.PRO pour obtenir un rendu PDF optimal.
+Ce guide explique comment formater correctement les lignes de devis et factures via l'API Facturation.pro pour obtenir un rendu PDF optimal.
 
 ## 📋 Table des matières
 
@@ -37,7 +37,7 @@ Ce guide explique comment formater correctement les lignes de devis et factures 
 
 ### Pourquoi `\r\n` ?
 
-L'API Facturation.PRO génère des PDF qui nécessitent des retours à la ligne au format Windows (`\r\n`). Les retours à la ligne Unix (`\n`) seuls ne sont pas reconnus par le moteur de rendu PDF.
+L'API Facturation.pro génère des PDF qui nécessitent des retours à la ligne au format Windows (`\r\n`). Les retours à la ligne Unix (`\n`) seuls ne sont pas reconnus par le moteur de rendu PDF.
 
 ---
 

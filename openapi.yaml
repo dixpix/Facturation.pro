@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Facturation.PRO API
+  title: Facturation.pro API
   version: "1.0.0"
-  description: API REST pour l'outil de facturation Facturation.PRO
+  description: API REST pour l'outil de facturation Facturation.pro
   contact:
     email: support@facturation.pro
   license:

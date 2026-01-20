@@ -1,12 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/specification/main/schema/mcp-manifest.schema.json",
   "name": "facturation-pro",
-  "displayName": "Facturation.PRO MCP Server",
+  "displayName": "Facturation.pro MCP Server",
   "version": "1.1.0",
-  "description": "Serveur MCP pour l'API Facturation.PRO - Gérez clients, devis, factures et achats via IA",
-  "longDescription": "Intégration complète de l'API Facturation.PRO avec le Model Context Protocol. Permet aux intelligences artificielles d'interagir avec votre compte de facturation pour automatiser la gestion de vos clients, devis, factures, achats, produits et plus encore. Couvre 100% des 69 routes de l'API Facturation.PRO.",
+  "description": "Serveur MCP pour l'API Facturation.pro - Gérez clients, devis, factures et achats via IA",
+  "longDescription": "Intégration complète de l'API Facturation.pro avec le Model Context Protocol. Permet aux intelligences artificielles d'interagir avec votre compte de facturation pour automatiser la gestion de vos clients, devis, factures, achats, produits et plus encore. Couvre 100% des 69 routes de l'API Facturation.pro.",
   "author": {
-    "name": "Facturation.PRO",
+    "name": "Facturation.pro",
     "email": "contact@facturation.pro",
     "url": "https://www.facturation.pro"
   },
@@ -77,21 +77,21 @@
     "environment": [
       {
         "name": "FACTURATION_API_ID",
-        "description": "Identifiant API Facturation.PRO (obtenu sur https://www.facturation.pro/account/api)",
+        "description": "Identifiant API Facturation.pro (obtenu sur https://www.facturation.pro/account/api)",
         "required": true,
         "secret": true,
         "example": "api_user_12345"
       },
       {
         "name": "FACTURATION_API_KEY",
-        "description": "Clé API Facturation.PRO",
+        "description": "Clé API Facturation.pro",
         "required": true,
         "secret": true,
         "example": "abcd1234efgh5678ijkl9012mnop3456"
       },
       {
         "name": "FACTURATION_FIRM_ID",
-        "description": "ID de l'entreprise sur Facturation.PRO",
+        "description": "ID de l'entreprise sur Facturation.pro",
         "required": true,
         "secret": false,
         "example": "123456"
@@ -242,7 +242,7 @@
   },
   "pricing": {
     "model": "free",
-    "description": "Gratuit. Nécessite un compte Facturation.PRO (plans gratuits et payants disponibles).",
+    "description": "Gratuit. Nécessite un compte Facturation.pro (plans gratuits et payants disponibles).",
     "url": "https://www.facturation.pro/tarifs"
   },
   "compatibility": {
@@ -251,7 +251,7 @@
     "architectures": ["amd64", "arm64"]
   },
   "features": [
-    "✅ 100% de couverture de l'API Facturation.PRO (69 routes)",
+    "✅ 100% de couverture de l'API Facturation.pro (69 routes)",
     "✅ Gestion complète clients, factures, devis, achats",
     "✅ Upload/download de fichiers (PDF, images, justificatifs)",
     "✅ Envoi d'emails (factures, devis)",
@@ -264,10 +264,10 @@
   ],
   "requirements": {
     "account": {
-      "provider": "Facturation.PRO",
+      "provider": "Facturation.pro",
       "url": "https://www.facturation.pro",
       "free_tier": true,
-      "description": "Un compte Facturation.PRO est nécessaire pour obtenir les clés API"
+      "description": "Un compte Facturation.pro est nécessaire pour obtenir les clés API"
     },
     "api_limits": {
       "rate_limit": "600 requêtes / 5 minutes",

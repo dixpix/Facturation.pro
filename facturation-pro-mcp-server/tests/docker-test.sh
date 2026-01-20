@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # =============================================================================
-# Tests Docker - Facturation.PRO MCP Server
+# Tests Docker - Facturation.pro MCP Server
 # =============================================================================
 #
 # Ce script teste le build, le lancement et le fonctionnement du conteneur
-# Docker du serveur MCP Facturation.PRO.
+# Docker du serveur MCP Facturation.pro.
 #
 # Usage :
 #   ./tests/docker-test.sh
@@ -46,7 +46,7 @@ TESTS_FAILED=0
 
 print_header() {
     echo -e "\n${CYAN}╔═══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║  Facturation.PRO MCP Server - Tests Docker                   ║${NC}"
+    echo -e "${CYAN}║  Facturation.pro MCP Server - Tests Docker                   ║${NC}"
     echo -e "${CYAN}╚═══════════════════════════════════════════════════════════════╝${NC}\n"
 }
 

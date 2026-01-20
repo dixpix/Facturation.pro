@@ -2,10 +2,10 @@
 
 /**
  * =============================================================================
- * Test d'intégration Facturation.PRO MCP Server
+ * Test d'intégration Facturation.pro MCP Server
  * =============================================================================
  *
- * Ce script teste la connexion à l'API Facturation.PRO et valide les
+ * Ce script teste la connexion à l'API Facturation.pro et valide les
  * fonctionnalités de base du serveur MCP.
  *
  * Usage :
@@ -67,7 +67,7 @@ const stats = {
  */
 function printHeader() {
   console.log('\n╔═══════════════════════════════════════════════════════════════╗');
-  console.log('║  Facturation.PRO MCP Server - Tests d\'intégration            ║');
+  console.log('║  Facturation.pro MCP Server - Tests d\'intégration            ║');
   console.log('╚═══════════════════════════════════════════════════════════════╝\n');
 }
 
@@ -131,7 +131,7 @@ function createApiClient() {
  * Test : Connexion API et authentification
  */
 async function testApiConnection(client) {
-  log.title('Test 1 : Connexion à l\'API Facturation.PRO');
+  log.title('Test 1 : Connexion à l\'API Facturation.pro');
   stats.total++;
 
   try {

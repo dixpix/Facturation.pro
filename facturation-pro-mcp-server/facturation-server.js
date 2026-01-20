@@ -39,7 +39,7 @@ class FacturationProServer {
       baseURL: BASE_URL,
       headers: {
         'X-API-Key': API_KEY,
-        'User-Agent': 'Facturation-PRO-MCP-Server (contact@example.com)',
+        'User-Agent': 'Facturation-Pro-MCP-Server (contact@example.com)',
         'Content-Type': 'application/json',
       },
     });
@@ -423,7 +423,7 @@ class FacturationProServer {
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('Facturation.PRO MCP server listening on stdio');
+    console.error('Facturation.pro MCP server listening on stdio');
   }
 }
 
