@@ -147,7 +147,7 @@ Liste des caractères Unicode problématiques :
   "items": [
     {
       "quantity": 0,
-      "title": "DÉVELOPPEMENT WEB",
+      "title": "DÉVELOPPEMENT",
       "unit_price": 0,
       "vat": 0,
       "style": "title",
@@ -155,14 +155,14 @@ Liste des caractères Unicode problématiques :
     },
     {
       "quantity": 1,
-      "title": "- Site responsive\r\n- 5 pages\r\n- Formation 1h",
+      "title": "- Prestation A\r\n- Prestation B\r\n- Formation 1h",
       "unit_price": 1500,
       "vat": 0.2,
       "position": 2
     },
     {
       "quantity": 0,
-      "title": "HÉBERGEMENT",
+      "title": "HÉBERGEMENT ET MAINTENANCE",
       "unit_price": 0,
       "vat": 0,
       "style": "title",
@@ -170,7 +170,7 @@ Liste des caractères Unicode problématiques :
     },
     {
       "quantity": 12,
-      "title": "Hébergement mensuel",
+      "title": "Hébergement et maintenance",
       "unit_price": 50,
       "vat": 0.2,
       "position": 4
@@ -183,18 +183,18 @@ Liste des caractères Unicode problématiques :
 
 ```
 ════════════════════════════════════════════════════════════
-DÉVELOPPEMENT WEB
+DÉVELOPPEMENT
 ════════════════════════════════════════════════════════════
 
-- Site responsive                            1    1 500,00 €
-- 5 pages
+- Prestation A                               1    1 500,00 €
+- Prestation B
 - Formation 1h
 
 ════════════════════════════════════════════════════════════
-HÉBERGEMENT
+HÉBERGEMENT ET MAINTENANCE
 ════════════════════════════════════════════════════════════
 
-Hébergement mensuel                         12       50,00 €
+Hébergement et maintenance                  12       50,00 €
 ```
 
 ### Exemple 2 : Facture détaillée avec plusieurs sections
@@ -215,7 +215,7 @@ Hébergement mensuel                         12       50,00 €
     {
       "quantity": 5,
       "title": "Audit technique\r\n- Analyse architecture\r\n- Revue code\r\n- Rapport détaillé",
-      "unit_price": 800,
+      "unit_price": 1500,
       "vat": 0.2,
       "position": 2
     },
@@ -230,7 +230,7 @@ Hébergement mensuel                         12       50,00 €
     {
       "quantity": 20,
       "title": "Développement features\r\n- Module authentification\r\n- API REST\r\n- Tests unitaires",
-      "unit_price": 500,
+      "unit_price": 2500,
       "vat": 0.2,
       "position": 4
     }
