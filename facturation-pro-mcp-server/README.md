@@ -26,20 +26,59 @@ Ce serveur expose **69 outils** correspondant à 100% des routes de l'API Factur
 
 ## 🚀 Installation
 
-### Prérequis
+### Méthode 1 : Docker Compose (RECOMMANDÉE) 🐳
 
+**Prérequis** :
+- Docker et Docker Compose installés
+- Compte Facturation.pro avec clé API
+
+**Avantages** :
+- ✅ Pas besoin de Node.js ou npm
+- ✅ Isolation complète de l'environnement
+- ✅ Gestion automatique des dépendances
+- ✅ Configuration simplifiée via fichier `.env`
+
+**Installation** :
+
+1. **Copier le fichier de configuration** :
+   ```bash
+   cd facturation-pro-mcp-server
+   cp .env.example .env
+   ```
+
+2. **Éditer le fichier `.env`** avec vos identifiants :
+   ```env
+   FACTURATION_API_ID=654321
+   FACTURATION_API_KEY=VotreCleAPI
+   FACTURATION_FIRM_ID=123456
+   FACTURATION_USER_AGENT="MonApp (contact@example.com)"
+   FACTURATION_BASE_URL=https://www.facturation.pro
+   ```
+
+3. **Démarrer le serveur** :
+   ```bash
+   docker-compose up -d
+   ```
+
+Le serveur démarre en arrière-plan et redémarre automatiquement en cas d'arrêt.
+
+### Méthode 2 : Installation native (ALTERNATIVE)
+
+**Prérequis** :
 - Node.js 16+
 - npm ou yarn
 - Compte Facturation.pro avec clé API
 
-### Installation des dépendances
+**Pour qui** : Utilisateurs avancés, développement, ou environnements sans Docker.
+
+**Installation des dépendances** :
 
 ```bash
 cd facturation-pro-mcp-server
 npm install
 ```
 
-### Construction
+**Construction** :
 
 ```bash
 npm run build
@@ -54,10 +93,10 @@ Le serveur compilé sera disponible dans `build/index.js`.
 Créez un fichier `.env` à la racine du projet :
 
 ```env
-FACTURATION_API_ID=VotreIdentifiant
+FACTURATION_API_ID=654321
 FACTURATION_API_KEY=VotreCleAPI
 FACTURATION_FIRM_ID=123456
-FACTURATION_USER_AGENT=MonApp (contact@example.com)
+FACTURATION_USER_AGENT="MonApp (contact@example.com)"
 FACTURATION_BASE_URL=https://www.facturation.pro
 ```
 
@@ -65,7 +104,42 @@ FACTURATION_BASE_URL=https://www.facturation.pro
 
 ### Configuration MCP (Claude Desktop)
 
-Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) :
+Selon la méthode d'installation choisie, ajoutez la configuration appropriée dans le fichier `claude_desktop_config.json`.
+
+**Emplacements du fichier de configuration :**
+
+- **macOS** : `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows** : `%APPDATA%\Claude\claude_desktop_config.json`
+- **Linux** : `~/.config/Claude/claude_desktop_config.json`
+
+#### Option A : Avec Docker Compose (RECOMMANDÉE)
+
+```json
+{
+  "mcpServers": {
+    "facturation-pro": {
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "/chemin/absolu/vers/facturation-pro-mcp-server/docker-compose.yml",
+        "run",
+        "--rm",
+        "facturation-mcp"
+      ]
+    }
+  }
+}
+```
+
+**Avantages** :
+- ✅ Configuration simplifiée (credentials dans `.env`)
+- ✅ Pas besoin de répéter les variables d'environnement
+- ✅ Isolation complète de l'environnement
+
+**Note** : Remplacez `/chemin/absolu/vers/facturation-pro-mcp-server/` par le chemin complet vers le dossier du serveur MCP.
+
+#### Option B : Avec installation native
 
 ```json
 {
@@ -73,7 +147,7 @@ Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_deskt
     "facturation-pro": {
       "command": "node",
       "args": [
-        "/chemin/vers/facturation-pro-mcp-server/build/index.js"
+        "/chemin/absolu/vers/facturation-pro-mcp-server/build/index.js"
       ],
       "env": {
         "FACTURATION_API_ID": "VotreIdentifiant",
@@ -87,10 +161,7 @@ Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_deskt
 }
 ```
 
-**Autres emplacements du fichier de configuration :**
-
-- **Windows** : `%APPDATA%\Claude\claude_desktop_config.json`
-- **Linux** : `~/.config/Claude/claude_desktop_config.json`
+**Note** : Remplacez les valeurs `VotreIdentifiant`, `VotreCleAPI`, etc. par vos véritables identifiants.
 
 ### Obtenir vos identifiants API
 
@@ -99,6 +170,77 @@ Ajoutez la configuration dans `~/Library/Application Support/Claude/claude_deskt
 3. Sélectionnez **"Clé API"**
 4. Notez votre **Identifiant API** et votre **Clé API**
 5. Notez également le **FIRM_ID** de votre entreprise
+
+## 🐳 Configuration Docker (avec Docker Compose)
+
+### Variables d'environnement Docker
+
+Le fichier `.env` contient toutes les variables nécessaires :
+
+```env
+# Identifiants API Facturation.pro
+FACTURATION_API_ID=VotreIdentifiant
+FACTURATION_API_KEY=VotreCleAPI
+FACTURATION_FIRM_ID=123456
+
+# Configuration de l'agent utilisateur (REQUIS)
+FACTURATION_USER_AGENT="MonApp (contact@example.com)"
+
+# URL de base de l'API
+FACTURATION_BASE_URL=https://www.facturation.pro
+
+# Port exposé (optionnel, par défaut 3000)
+PORT=3000
+```
+
+**Important** : Le `USER_AGENT` doit contenir vos coordonnées de contact (nom de l'application et email) comme requis par l'API Facturation.pro.
+
+### Commandes Docker Compose utiles
+
+```bash
+# Démarrer le serveur en arrière-plan
+docker-compose up -d
+
+# Voir les logs en temps réel
+docker-compose logs -f
+
+# Voir les logs des dernières 100 lignes
+docker-compose logs --tail=100
+
+# Arrêter le serveur
+docker-compose down
+
+# Redémarrer le serveur
+docker-compose restart
+
+# Reconstruire l'image et redémarrer (après modification du code)
+docker-compose up -d --build
+
+# Vérifier l'état du serveur
+docker-compose ps
+
+# Voir l'utilisation des ressources
+docker stats facturation-mcp
+```
+
+### Volume Docker
+
+Le serveur utilise un volume Docker pour stocker les fichiers téléchargés :
+
+- **Volume** : `./downloads` (monté sur `/app/downloads` dans le conteneur)
+- **Usage** : Stockage temporaire des PDF, pièces jointes, etc.
+
+Ce volume persiste les fichiers même après l'arrêt du conteneur.
+
+### Healthcheck
+
+Le conteneur Docker inclut un healthcheck qui vérifie automatiquement que le serveur fonctionne correctement :
+
+- **Intervalle** : Vérifie toutes les 30 secondes
+- **Timeout** : 10 secondes maximum par vérification
+- **Retries** : 3 tentatives avant de marquer le conteneur comme "unhealthy"
+
+Vérifiez le statut avec `docker-compose ps` - la colonne STATUS doit afficher "(healthy)".
 
 ## 🎯 Utilisation
 

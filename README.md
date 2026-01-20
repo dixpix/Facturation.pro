@@ -63,15 +63,30 @@ Importez la collection dans Postman :
 
 ### 3. MCP Server
 
-Consultez la documentation complète dans [facturation-pro-mcp-server/README.md](facturation-pro-mcp-server/README.md)
+Le serveur MCP permet d'intégrer l'API Facturation.pro avec les intelligences artificielles compatibles MCP (Claude Desktop, Cline, etc.).
 
-Installation rapide :
+**Installation rapide avec Docker Compose (RECOMMANDÉE)** :
+
+```bash
+cd facturation-pro-mcp-server
+cp .env.example .env
+# Éditez .env avec vos identifiants API
+docker-compose up -d
+```
+
+**Installation native (alternative)** :
 
 ```bash
 cd facturation-pro-mcp-server
 npm install
 npm run build
 ```
+
+📖 **Documentation complète** : Consultez [facturation-pro-mcp-server/README.md](facturation-pro-mcp-server/README.md) pour :
+- Configuration détaillée de Docker Compose
+- Configuration pour Claude Desktop
+- Liste complète des 69 outils disponibles
+- Guide de debugging et développement
 
 ## 📖 Documentation
 
@@ -127,11 +142,11 @@ Ce projet contient des outils d'intégration avec l'API Facturation.pro. Consult
 
 ## 📊 Statut du projet
 
-✅ **OpenAPI** : Conforme à 100% (69/69 routes)
-✅ **Postman** : Couverture à 100%
-✅ **MCP Server** : Conforme à 100% (69 outils)
-✅ **Documentation** : À jour
+- ✅ **OpenAPI** : Conforme à 100% (69/69 routes)
+- ✅ **Postman** : Couverture à 100%
+- ✅ **MCP Server** : Conforme à 100% (69 outils)
+- ✅ **Documentation** : À jour
 
 ---
 
-**Note** : Ce projet est maintenu à jour avec l'API Facturation.pro. La dernière mise à jour majeure inclut le module "Suivis commerciaux" et les routes d'envoi d'emails pour devis et factures.
+**Note** : Ce projet est non officiel et s'appuie sur l'API Facturation.pro. 
