@@ -15,7 +15,7 @@ Ce guide explique comment formater correctement les lignes de devis et factures 
 
 ## Retours à la ligne
 
-### ❌ Incorrect : `\n` (style Unix/Linux)
+### ✅ Correct : `\n` (style Unix/Linux)
 
 ```json
 {
@@ -23,21 +23,9 @@ Ce guide explique comment formater correctement les lignes de devis et factures 
 }
 ```
 
-**Résultat** : Les retours à la ligne ne s'affichent pas correctement dans le PDF.
+**Résultat** : Chaque point s'affiche sur une ligne séparée dans le PDF. 
 
-### ✅ Correct : `\r\n` (style Windows)
-
-```json
-{
-  "title": "Point 1\r\nPoint 2\r\nPoint 3"
-}
-```
-
-**Résultat** : Chaque point s'affiche sur une ligne séparée dans le PDF.
-
-### Pourquoi `\r\n` ?
-
-L'API Facturation.pro génère des PDF qui nécessitent des retours à la ligne au format Windows (`\r\n`). Les retours à la ligne Unix (`\n`) seuls ne sont pas reconnus par le moteur de rendu PDF.
+**Option** : les retours chariots `\r\n` (style Windows) sont convertis en `\n` par l'API.
 
 ---
 
