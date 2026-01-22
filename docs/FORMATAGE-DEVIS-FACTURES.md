@@ -67,7 +67,6 @@ DÉVELOPPEMENT WEB
 
 - Si vous oubliez `style: "title"`, la ligne aura le style normal
 - Si vous ne mettez pas les montants à zéro, des montants incorrects apparaîtront
-- Les titres ne doivent jamais avoir de montant calculé
 
 ---
 
@@ -80,7 +79,7 @@ Utilisez `"- "` (trait d'union suivi d'un espace) au début de chaque ligne :
 ```json
 {
   "quantity": 1,
-  "title": "- Site responsive\r\n- 5 pages\r\n- Formation 1h",
+  "title": "- Site responsive\n- 5 pages\n- Formation 1h",
   "unit_price": 1500,
   "vat": 0.2
 }
@@ -128,6 +127,8 @@ Liste des caractères Unicode problématiques :
 
 ### Exemple 1 : Devis simple avec titre et détails
 
+**URL**: POST {{baseUrl}}/firms/{{firmId}}/quotes.json
+
 ```json
 {
   "customer_id": 12345,
@@ -143,7 +144,7 @@ Liste des caractères Unicode problématiques :
     },
     {
       "quantity": 1,
-      "title": "- Prestation A\r\n- Prestation B\r\n- Formation 1h",
+      "title": "- Prestation A\n- Prestation B\n- Formation 1h",
       "unit_price": 1500,
       "vat": 0.2,
       "position": 2
@@ -158,10 +159,17 @@ Liste des caractères Unicode problématiques :
     },
     {
       "quantity": 12,
-      "title": "Hébergement et maintenance",
-      "unit_price": 50,
+      "title": "Hébergement",
+      "unit_price": 10,
       "vat": 0.2,
       "position": 4
+    },
+    {
+      "quantity": 12,
+      "title": "Maintenance",
+      "unit_price": 50,
+      "vat": 0.2,
+      "position": 5
     }
   ]
 }
@@ -182,10 +190,13 @@ DÉVELOPPEMENT
 HÉBERGEMENT ET MAINTENANCE
 ════════════════════════════════════════════════════════════
 
-Hébergement et maintenance                  12       50,00 €
+Hébergement                                 12       10,00 €
+Maintenance                                 12       50,00 €
 ```
 
 ### Exemple 2 : Facture détaillée avec plusieurs sections
+
+**URL**: POST {{baseUrl}}/firms/{{firmId}}/invoices.json
 
 ```json
 {
@@ -202,7 +213,7 @@ Hébergement et maintenance                  12       50,00 €
     },
     {
       "quantity": 5,
-      "title": "Audit technique\r\n- Analyse architecture\r\n- Revue code\r\n- Rapport détaillé",
+      "title": "Audit technique\n- Analyse architecture\n- Revue code\n- Rapport détaillé",
       "unit_price": 1500,
       "vat": 0.2,
       "position": 2
@@ -217,7 +228,7 @@ Hébergement et maintenance                  12       50,00 €
     },
     {
       "quantity": 20,
-      "title": "Développement features\r\n- Module authentification\r\n- API REST\r\n- Tests unitaires",
+      "title": "Développement features\n- Module authentification\n- API REST\n- Tests unitaires",
       "unit_price": 2500,
       "vat": 0.2,
       "position": 4
@@ -229,20 +240,25 @@ Hébergement et maintenance                  12       50,00 €
 
 ### Exemple 3 : Modification d'un devis existant
 
+**URL**: PATCH {{baseUrl}}/firms/{{firmId}}/quotes/{{quoteId}}.json
+
 ```json
 {
-  "quote_id": 999,
   "items": [
     {
       "id": 1234,
-      "title": "Formation complète\r\n- 2 jours\r\n- Support inclus",
+      "title": "<b>Prestation 1 :</b>\n- Point 1\n- Point 2\n- Point 3",
+    },
+    {
+      "position": 2,
       "quantity": 1,
-      "unit_price": 2000,
+      "title": "<b>Prestation 2 :</b>\n- Point A\n- Point B\n- Point C",
+      "unit_price": 200,
       "vat": 0.2
     },
     {
-      "id": 1235,
-      "_destroy": "1"
+      "id": 5678,
+      "_destroy": 1
     }
   ]
 }
@@ -250,25 +266,14 @@ Hébergement et maintenance                  12       50,00 €
 
 **Résultat** :
 - La ligne 1234 est mise à jour avec le nouveau libellé
-- La ligne 1235 est supprimée du devis
+- Une ligne est ajoutée en deuxième position
+- La ligne 5678 est supprimée du devis
 
 ---
 
 ## Erreurs courantes
 
-### Erreur 1 : Retour à la ligne Unix
-
-❌ **Problème** :
-```json
-{"title": "Point 1\nPoint 2\nPoint 3"}
-```
-
-✅ **Solution** :
-```json
-{"title": "Point 1\r\nPoint 2\r\nPoint 3"}
-```
-
-### Erreur 2 : Titre sans `style: "title"`
+### Erreur 1 : Titre sans `style: "title"`
 
 ❌ **Problème** :
 ```json
@@ -293,7 +298,7 @@ Hébergement et maintenance                  12       50,00 €
 }
 ```
 
-### Erreur 3 : Titre avec montant non nul
+### Erreur 2 : Titre avec montant non nul
 
 ❌ **Problème** :
 ```json
@@ -319,21 +324,21 @@ Hébergement et maintenance                  12       50,00 €
 }
 ```
 
-### Erreur 4 : Puces Unicode
+### Erreur 3 : Puces Unicode
 
 ❌ **Problème** :
 ```json
-{"title": "• Point 1\r\n• Point 2\r\n• Point 3"}
+{"title": "• Point 1\n• Point 2\n• Point 3"}
 ```
 
 **Résultat** : Les puces peuvent s'afficher comme `?` ou `□` dans le PDF.
 
 ✅ **Solution** :
 ```json
-{"title": "- Point 1\r\n- Point 2\r\n- Point 3"}
+{"title": "- Point 1\n- Point 2\n- Point 3"}
 ```
 
-### Erreur 5 : Oubli du paramètre `position`
+### Erreur 4 : Oubli du paramètre `position`
 
 ❌ **Problème** :
 ```json
@@ -359,7 +364,6 @@ Hébergement et maintenance                  12       50,00 €
 
 | Règle | Bon usage | Mauvais usage |
 |-------|-----------|---------------|
-| **Retour à la ligne** | `\r\n` | `\n` |
 | **Titre de section** | `style: "title"` avec montants = 0 | Sans `style` ou montants ≠ 0 |
 | **Listes à puces** | `"- "` | `"•"` ou `"◦"` |
 | **Ordre d'affichage** | Utiliser `position` | Sans `position` |
