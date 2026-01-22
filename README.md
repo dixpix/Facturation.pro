@@ -1,6 +1,6 @@
 # Facturation.pro - OpenAPI, Postman et MCP
 
-Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API de [Facturation.pro](https://www.facturation.pro), un service de facturation en ligne pour les professionnels. Il est basé sur la documentation officielle fournie par la société ainsi que son support au format .md proposé pour LLM.
+Ce dépôt non officiel contient l'ensemble des outils d'intégration avec l'API de [Facturation.pro](https://www.facturation.pro), un service de facturation en ligne pour les professionnels. Il est basé sur [la documentation officielle](https://facturation.dev) fournie par la société ainsi que son [support au format .md proposé pour LLM](https://facturation.dev/llm).
 
 ## 📦 Contenu du projet
 
