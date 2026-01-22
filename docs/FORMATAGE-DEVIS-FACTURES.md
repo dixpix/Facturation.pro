@@ -213,7 +213,7 @@ Maintenance                                 12       50,00 €
     },
     {
       "quantity": 5,
-      "title": "Audit technique\n- Analyse architecture\n- Revue code\n- Rapport détaillé",
+      "title": "<b>Audit technique</b>:\n- Analyse architecture\n- Revue code\n- Rapport détaillé",
       "unit_price": 1500,
       "vat": 0.2,
       "position": 2
@@ -228,7 +228,7 @@ Maintenance                                 12       50,00 €
     },
     {
       "quantity": 20,
-      "title": "Développement features\n- Module authentification\n- API REST\n- Tests unitaires",
+      "title": "<b>Développement features</b>:\n- Module authentification\n- API REST\n- Tests unitaires",
       "unit_price": 2500,
       "vat": 0.2,
       "position": 4
